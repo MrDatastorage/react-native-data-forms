@@ -13,8 +13,8 @@ The goal of this function is to seperate semantics from data from implementation
 ### Props
 
 ## Example Use
-```js
 
+```js
 import * as React from "react";
 
 import _DataForm from "react-native-data-forms";
@@ -56,7 +56,6 @@ const nextHour = date => {
 };
 
 class CreateChannelScreen extends React.Component<CreateChannelProps> {
-
   static navigationOptions = props => {
     return {
       title: props.navigation.state.params.title
@@ -226,19 +225,18 @@ class CreateChannelScreen extends React.Component<CreateChannelProps> {
 }
 
 export default CreateChannelScreen;
-
 ```
 
 This will look like this:
-
-
+![Example](/example1.png)
 
 ## Expanding
-In the future, I'm planning to add these features to the codebase, so you don't have to. 
 
-* Single Sign On with Google, Facebook, LinkedIn...
-* Passwords
-* Style properties
-* Selecting and uploading multiple images/videos, 1 by 1
-* File upload
-* Step-by-step form functionality that walks through all inputs one by one, navigating to the next input using a stack navigator. This can be achieved by adding a walkThrough bool prop and a function getScreens that returns all Forms seperately in screens-objects which can be added to your stack-navigator dynamically.
+In the future, I'm planning to add these features to the codebase, so you don't have to.
+
+- Single Sign On with Google, Facebook, LinkedIn...
+- Passwords
+- Style properties
+- Selecting and uploading multiple images/videos, 1 by 1
+- File upload
+- Step-by-step form functionality that walks through all inputs one by one, navigating to the next input using a stack navigator. This can be achieved by adding a walkThrough bool prop and a function getScreens that returns all Forms seperately in screens-objects which can be added to your stack-navigator dynamically.
