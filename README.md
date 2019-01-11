@@ -228,7 +228,8 @@ export default CreateChannelScreen;
 ```
 
 This will look like this:
-<img src="/example1.png" width="48" />
+
+<img src="/example1.png" width="250" />
 
 ## Expanding
 
