@@ -21,8 +21,8 @@ export type InputProps = Field & {
   value: any;
   navigation: object;
   key: number;
-  state: object;
-  device: object;
-  me: object;
-  setState: (state: object) => void;
+  state?: object;
+  device?: object;
+  me?: object;
+  setState?: (state: object) => void;
 };

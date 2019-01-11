@@ -43,18 +43,18 @@ class FadeInTitle extends React.Component<P, S> {
       set();
     }
 
-    //Step 1
+    //Animation Step 1
     let initialValue = this.state.show ? MAXHEIGHT : 0,
       finalValue = this.state.show ? 0 : to === false ? 0 : MAXHEIGHT;
 
-    this.state.animation.setValue(initialValue); //Step 3
+    this.state.animation.setValue(initialValue); //Step 2
     Animated.spring(
-      //Step 4
+      //Step 3
       this.state.animation,
       {
         toValue: finalValue
       }
-    ).start(() => {}); //Step 5
+    ).start(() => {}); //Step 4
   }
 
   render() {
