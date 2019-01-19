@@ -10,17 +10,19 @@ The goal of this function is to seperate semantics from data from implementation
 
 ## Documentation
 
-### Props
-
 ## Example Use
 
+**Step 1:** Create a wrapper of our component:
 ```js
 import * as React from "react";
 
 import _DataForm from "react-native-data-forms";
 import { Field } from "react-native-data-forms/types";
 
+// import extra input types, for example an emailsOrUsersInput type you created yourself that takes a text and suggests an email or users from your userbase.
 import emailsOrUsers from "./fat/emailsOrUsersInput";
+
+//if you want to use image upload, give a firebase Config here.
 const firebaseConfig = {
   apiKey: "?????",
   authDomain: "?????",
@@ -30,10 +32,12 @@ const firebaseConfig = {
   messagingSenderId: "?????"
 };
 
+// if you want to use the location input type, we need a google places key.
 const googlePlacesConfig = {
   key: "?????"
 };
 
+// Create and export DataForms with default props installed.
 const DataForm = props => {
   const allProps = {
     ...props,
@@ -46,21 +50,28 @@ const DataForm = props => {
   return <_DataForm {...allProps} />;
 };
 
-type CreateChannelProps = {};
+export { DataForm };
+```
 
-const nextHour = date => {
-  date.setHours(date.getHours() + 1);
-  date.setMinutes(0);
+**Step 2:** if you need the `location` or `image` type, you need to add the data-forms screens to your navigation stack where you want the image-screen and location-screen to load, like so:
 
-  return date;
-};
+```js
+import { screens } from "react-native-data-forms";
 
-class CreateChannelScreen extends React.Component<CreateChannelProps> {
-  static navigationOptions = props => {
-    return {
-      title: props.navigation.state.params.title
-    };
-  };
+
+const Stack = createStackNavigator(
+  {
+    root: { screen: HomeScreen },
+    ...screens
+  }
+);
+
+```
+
+You're all set up! You can use the component like this: This is an example with all default types:
+
+```js
+class ExampleScreen extends React.Component {
 
   render() {
     const {
@@ -88,8 +99,7 @@ class CreateChannelScreen extends React.Component<CreateChannelProps> {
     if (params.isEvent) {
       fields.push({
         field: "title",
-        title: "Title",
-        onChange: v => this.props.navigation.setParams({ title: v })
+        title: "Title"
       });
     }
 
@@ -231,9 +241,58 @@ This will look like this:
 
 <img src="/example1.png" width="250" />
 
+
+
+### Props
+
+**fields**: Array of fields you want in the form. This is a field-object:
+
+```ts
+type Field = {
+  field: string; //REQUIRED. key of the field (should be the same as the key used in the values-prop of DataForm
+  title?: string; //title of the field
+  type?: string; //type of the field, if not set, it uses a TextField
+  values?: Value[]; //possible values of the field if it's a input type where you can choose between values
+  description?: string;// optional description text
+  descriptionComponent?: React.Node;//optional description component
+  startSection?: string;//section title, if new section above this field
+  startSectionDescription?: string;//optionally, if its a new section, add an description
+  validate?: (value) => boolean;//validate input and return if it's valid or not 
+  errorMessage?: string;//if it's invalid, show this error message
+  mapFieldsToDB?: object; // keys: output of Inputfield --> values: db-field (string) or db-fields (string[])
+  hidden?: (allCurrentValues: object) => boolean; //hide the input field based on all current values
+};
+
+type Value = { 
+    label: string; 
+    value: string | number
+};
+```
+
+Other props:
+```ts
+
+  values: object;
+  vectorIcons: Object; //react-native-vector-icons from expo
+  expo: Object; // expo object
+  firebaseConfig?: Firebase;
+  googlePlacesConfig?: GooglePlaces;
+  completeButton?: string;
+  completeButtonBackground?: string; // color code
+  extraInputTypes?: React.Node[];
+  noScroll?: boolean;
+  submitAll?: boolean;
+  onComplete?: () => void;
+  mutate: (vars: Object) => any;
+  screenProps: any;
+  navigation: any;
+
+
+```
+
 ## Expanding
 
-In the future, I'm planning to add these features to the codebase, so you don't have to.
+In the future, I'm planning to add these features to the codebase.
 
 - Single Sign On with Google, Facebook, LinkedIn...
 - Passwords
@@ -241,3 +300,13 @@ In the future, I'm planning to add these features to the codebase, so you don't 
 - Selecting and uploading multiple images/videos, 1 by 1
 - File upload
 - Step-by-step form functionality that walks through all inputs one by one, navigating to the next input using a stack navigator. This can be achieved by adding a walkThrough bool prop and a function getScreens that returns all Forms seperately in screens-objects which can be added to your stack-navigator dynamically.
+
+If you want, you can create PR's for this (I'm not gonna do it):
+- Wix navigation support
+- bare react-native support
+
+
+If anyone using this likes to contribute, please contact me so we can discuss about the way to implement things. [Here](https://karsens.com) you can find a contact button.
+
+## Hire me
+If you need consulting about whether or not it's possible to use this in your codebase - contact me - I'll help you for free. If you need help to convert your codebase to use this library, I can help you with that. [Hire me](https://karsens.com/hire-me/). 
