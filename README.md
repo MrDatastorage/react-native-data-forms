@@ -239,8 +239,7 @@ export default Example;
 
 This will look like this:
 
-<img src="/example1.png" width="480" />
-
+<blockquote class="imgur-embed-pub" lang="en" data-id="a/qRfOURy"></blockquote><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script>
 
 
 ### Props
