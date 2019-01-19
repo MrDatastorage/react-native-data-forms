@@ -14,6 +14,7 @@ The goal of this function is to seperate semantics from data from implementation
 
 ## Example Use
 
+First create a wrapper of our component:
 ```js
 import * as React from "react";
 
@@ -46,21 +47,28 @@ const DataForm = props => {
   return <_DataForm {...allProps} />;
 };
 
-type CreateChannelProps = {};
+export { DataForm };
+```
 
-const nextHour = date => {
-  date.setHours(date.getHours() + 1);
-  date.setMinutes(0);
+Then, if you need the `location` or `image` type, you need to add the data-forms screens to your navigation stack where you want the image-screen and location-screen to load, like so:
 
-  return date;
-};
+```js
+import { screens } from "react-native-data-forms";
 
-class CreateChannelScreen extends React.Component<CreateChannelProps> {
-  static navigationOptions = props => {
-    return {
-      title: props.navigation.state.params.title
-    };
-  };
+
+const Stack = createStackNavigator(
+  {
+    root: { screen: HomeScreen },
+    ...screens
+  }
+);
+
+```
+
+Then you're all set up! You can use the component like this: This is an example with all default types:
+
+```
+class ExampleScreen extends React.Component {
 
   render() {
     const {
@@ -88,8 +96,7 @@ class CreateChannelScreen extends React.Component<CreateChannelProps> {
     if (params.isEvent) {
       fields.push({
         field: "title",
-        title: "Title",
-        onChange: v => this.props.navigation.setParams({ title: v })
+        title: "Title"
       });
     }
 
