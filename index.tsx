@@ -28,9 +28,35 @@ export const screens = {
 const stringFromObjectArray = (a: Value[]) =>
   a ? a.map((v: Value) => `[${v.value}]`).join(",") : "";
 
+type Firebase = {
+  apiKey: string;
+  authDomain: string;
+  databaseURL: string;
+  projectId: string;
+  storageBucket: string;
+  messagingSenderId: string;
+};
+
+type GooglePlaces = {
+  key: string;
+};
+
 type DataFormProps = {
   fields: Field[];
   values: object;
+  vectorIcons: Object; //react-native-vector-icons from expo
+  expo: Object; // expo object
+  firebaseConfig?: Firebase;
+  googlePlacesConfig?: GooglePlaces;
+  completeButton?: string;
+  completeButtonBackground?: string; // color code
+  extraInputTypes?: React.Node[];
+  noScroll?: boolean;
+  submitAll?: boolean;
+  onComplete?: () => void;
+  mutate: (vars: Object) => any;
+  screenProps: any;
+  navigation: any;
 };
 
 type DataFormState = any;
