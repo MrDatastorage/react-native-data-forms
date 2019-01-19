@@ -30,7 +30,12 @@ class ImageScreen extends React.Component {
 
     const firebaseConfig = this.props.navigation.state.params.firebaseConfig;
 
-    firebase.initializeApp(firebaseConfig);
+    try {
+      firebase.initializeApp(firebaseConfig);
+    } catch (e) {
+      // sometimes, if you have 2 image components in the form, this could be initialized twice, which will raise an error.
+      console.log(e);
+    }
 
     const { IntentLauncherAndroid } = this.props.navigation.state.params.expo;
 
