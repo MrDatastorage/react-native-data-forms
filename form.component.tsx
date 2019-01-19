@@ -17,7 +17,6 @@ class FormComponent extends React.Component {
       navigation,
       completeButtonBackground,
       saveValues,
-      completeButton,
       fields,
       values,
       noScroll,
@@ -32,6 +31,10 @@ class FormComponent extends React.Component {
       firebaseConfig,
       googlePlacesConfig
     } = this.props;
+
+    const completeButton = this.props.completeButton
+      ? this.props.completeButton
+      : "Save";
 
     const allFields = fields.map((field, index) => {
       let value;
