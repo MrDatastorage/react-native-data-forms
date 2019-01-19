@@ -240,27 +240,33 @@ This will look like this:
 
 ### Props
 
+**fields**: Array of fields you want in the form. This is a field-object:
 
 ```js
-
-type Value = { label: string; value: string | number };
-
 type Field = {
-  description: string;
-  descriptionComponent: React.Node;
-  values: Value[] | undefined;
-  startSection: string;
-  errorMessage: string;
-  startSectionDescription: string;
-  field: string;
-  mapFieldsToDB: object; // keys: output of Inputfield --> values: db-field (string) or db-fields (string[])
-  title: string;
-  type: string;
-  hidden: (allCurrentValues: object) => boolean; //hide the input field based on all current values+state
+  field: string; //REQUIRED. key of the field (should be the same as the key used in the values-prop of DataForm
+  title?: string; //title of the field
+  type?: string; //type of the field, if not set, it uses a TextField
+  values?: Value[] | undefined; //possible values of the field if it's a input type where you can choose between values
+  description?: string;// optional description text
+  descriptionComponent?: React.Node;//optional description component
+  startSection?: string;//section title, if new section above this field
+  startSectionDescription?: string;//optionally, if its a new section, add an description
+  validate?: (value) => boolean;//validate input and return if it's valid or not 
+  errorMessage?: string;//if it's invalid, show this error message
+  mapFieldsToDB?: object; // keys: output of Inputfield --> values: db-field (string) or db-fields (string[])
+  hidden?: (allCurrentValues: object) => boolean; //hide the input field based on all current values
 };
 
+type Value = { 
+    label: string; 
+    value: string | number
+};
+```
 
-  fields: Field[];
+Other props:
+```js
+
   values: object;
   vectorIcons: Object; //react-native-vector-icons from expo
   expo: Object; // expo object
