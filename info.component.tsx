@@ -6,7 +6,7 @@ export default ({ info, vectorIcons }) => {
 
   return (
     <TouchableOpacity onPress={() => Alert.alert("", info)}>
-      <FontAwesome name="info-circle" />
+      <FontAwesome size={16} name="info-circle" />
     </TouchableOpacity>
   );
 };
