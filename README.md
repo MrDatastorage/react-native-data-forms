@@ -301,6 +301,11 @@ In the future, I'm planning to add these features to the codebase.
 - File upload
 - Step-by-step form functionality that walks through all inputs one by one, navigating to the next input using a stack navigator. This can be achieved by adding a walkThrough bool prop and a function getScreens that returns all Forms seperately in screens-objects which can be added to your stack-navigator dynamically.
 
+If you want, you can create PR's for this (I'm not gonna do it):
+- Wix navigation support
+- bare react-native support
+
+
 If anyone using this likes to contribute, please contact me so we can discuss about the way to implement things. [Here](https://karsens.com) you can find a contact button.
 
 ## Hire me
