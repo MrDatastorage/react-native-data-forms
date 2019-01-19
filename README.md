@@ -239,8 +239,8 @@ export default Example;
 
 This will look like this:
 
-![img](https://i.ibb.co/WpqfRLq/gif1forms.gif)
-![img](https://i.ibb.co/WpqfRLq/gif2forms.gif)
+![img](https://im.ezgif.com/tmp/ezgif-1-20f8cf41380f.gif)
+![img](https://im.ezgif.com/tmp/ezgif-1-e9f1bb923190.gif)
 
 
 ### Props
