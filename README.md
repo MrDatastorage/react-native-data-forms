@@ -71,48 +71,66 @@ const Stack = createStackNavigator(
 You're all set up! You can use the component like this: This is an example with all default types:
 
 ```js
-class ExampleScreen extends React.Component {
+import * as React from "react";
+import { DataForm } from "../import";
+import { Field } from "react-native-data-forms/types";
+import { Alert } from "react-native";
 
+class Example extends React.Component {
   render() {
-    const {
-      navigation,
-      screenProps: {
-        data: { me }
-      },
-      navigation: {
-        state: { params }
-      }
-    } = this.props;
+    const defaultComplete = () => Alert.alert("Saved");
 
-    const { createChannel, editId } = params;
-
-    const defaultComplete = () => navigation.goBack();
-
-    const fields: Field[] = [];
-
-    fields.push({
-      field: "coverImage",
-      type: "coverImage",
-      title: "Cover Image"
-    });
-
-    if (params.isEvent) {
-      fields.push({
-        field: "title",
-        title: "Title"
+    // this could be an apollo mutation, an api call, or setting a redux state.
+    const mutate = v =>
+      new Promise(function(resolve, reject) {
+        setTimeout(function() {
+          resolve(v);
+        }, 300);
       });
-    }
 
-    fields.push({
-      field: "text",
-      title: this.props.navigation.state.params.isEvent
-        ? "Tell people more about the event"
-        : `What's going on, ${me && me.username}?`,
-      type: "textArea"
-    });
+    const fields: Field[] = [
+      {
+        field: "coverImage",
+        type: "coverImage"
+      },
 
-    if (params.isEvent) {
-      fields.push({
+      {
+        field: "image",
+        type: "image",
+        title: "Pick an image"
+      },
+
+      {
+        field: "text",
+        title: "Text"
+        //default type is a text input
+      },
+
+      {
+        field: "textArea",
+        title: "Text Area",
+        type: "textArea"
+      },
+
+      {
+        field: "numbers",
+        title: "Fill in Numbers here",
+        type: "numbers"
+      },
+
+      {
+        field: "phone",
+        title: "Phone number",
+        type: "phone"
+      },
+
+      {
+        field: "date",
+        title: "Date",
+        type: "date"
+      },
+
+      {
         field: "STARTEND",
         titles: {
           start: "Start",
@@ -124,9 +142,22 @@ class ExampleScreen extends React.Component {
         },
         startSection: true,
         type: "dates"
-      });
+      },
 
-      fields.push({
+      {
+        startSection: true,
+        field: "color",
+        title: "Color",
+        type: "color"
+      },
+
+      {
+        field: "boolean",
+        title: "Yes or no?",
+        type: "boolean"
+      },
+
+      {
         startSection: true,
         field: "LOCATION",
         mapFieldsToDB: {
@@ -139,154 +170,270 @@ class ExampleScreen extends React.Component {
         },
         title: "Location",
         type: "location"
-      });
+      },
 
-      fields.push({
-        info: "Leave empty if there is no maximum",
-        field: "maxParticipants",
-        title: "Max participants"
-      });
+      {
+        field: "selectOne",
+        title: "Select one option",
+        type: "selectOne",
+        values: [
+          { value: 1, label: "option 1" },
+          { value: 2, label: "option 2" },
+          { value: 3, label: "option 3" }
+        ]
+      },
 
-      fields.push({
-        field: "price",
-        info: "Leave empty if there is no price",
-        title: "Price"
-      });
+      {
+        field: "selectMultiple",
+        title: "Select multiple options",
+        type: "selectMultiple",
+        values: ["option 1 ", "option 2 ", "option 3"]
+      },
 
-      fields.push({
-        field: "ticketLink",
-        title: "Link to buy tickets"
-      });
-    }
+      {
+        field: "categories",
+        title: "Fill in some categories",
+        type: "categories"
+      },
 
-    if (me.level > 1 && !params.editId) {
-      fields.push({
-        field: "sendPush",
-        title: "Send push notification",
-        type: "boolean"
-      });
-      fields.push({
-        field: "sendEmail",
-        title: "Send emails",
-        type: "boolean"
-      });
-    }
+      {
+        field: "dictionary",
+        title: "Dictionary",
+        type: "dictionary"
+      }
+    ];
 
-    if (me.isAdmin) {
-      fields.push({
-        field: "sendEmailFromAdmin",
-        title: "Admin mass email",
-        info: "Email this post to everyone in all of Communify (Admin-only)",
-        type: "boolean"
-      });
-    }
-
-    let values =
-      params && params.channel
-        ? {
-            ...params.channel,
-            sendPush: false,
-            sendEmailFromAdmin: false,
-            sendEmail: false
-          }
-        : {
-            title: "",
-            text: "",
-            coverImage: "",
-            maxParticipants: null,
-            price: null,
-            ticketLink: "",
-            sendPush: false,
-            sendEmailFromAdmin: false,
-            sendEmail: false
-          };
-
-    if (params.isEvent) {
-      values =
-        params && params.channel
-          ? {
-              ...values,
-              eventAt: new Date(params.channel.eventAt),
-              eventEndAt: new Date(params.channel.eventEndAt)
-            }
-          : {
-              ...values,
-              eventAt: nextHour(new Date(Date.now())),
-              eventEndAt: nextHour(nextHour(new Date(Date.now())))
-            };
-    }
-
-    const mutation = vars => {
-      return createChannel({ ...vars, editId });
+    let values = {
+      coverImage: null,
+      image: null,
+      text: "",
+      textArea: "",
+      numbers: "",
+      phone: "",
+      date: new Date(Date.now()),
+      color: "",
+      boolean: true,
+      selectOne: "",
+      selectMultiple: "",
+      categories: "",
+      dictionary: "",
+      eventAt: new Date(Date.now()),
+      eventEndAt: new Date(Date.now())
     };
 
     return (
       <DataForm
-        submitAll
+        {...this.props}
         fields={fields}
         onComplete={defaultComplete}
-        mutate={mutation}
-        completeButton="Create"
+        mutate={vars => mutate(vars)}
         values={values}
-        {...this.props}
       />
     );
   }
 }
 
-export default CreateChannelScreen;
+export default Example;
+
 ```
 
 This will look like this:
 
-<img src="/example1.png" width="250" />
+<img src="/example1.png" width="480" />
 
 
 
 ### Props
 
-**fields**: Array of fields you want in the form. This is a field-object:
 
+All props:
 ```ts
-type Field = {
-  field: string; //REQUIRED. key of the field (should be the same as the key used in the values-prop of DataForm
-  title?: string; //title of the field
-  type?: string; //type of the field, if not set, it uses a TextField
-  values?: Value[]; //possible values of the field if it's a input type where you can choose between values
-  description?: string;// optional description text
-  descriptionComponent?: React.Node;//optional description component
-  startSection?: string;//section title, if new section above this field
-  startSectionDescription?: string;//optionally, if its a new section, add an description
-  validate?: (value) => boolean;//validate input and return if it's valid or not 
-  errorMessage?: string;//if it's invalid, show this error message
-  mapFieldsToDB?: object; // keys: output of Inputfield --> values: db-field (string) or db-fields (string[])
-  hidden?: (allCurrentValues: object) => boolean; //hide the input field based on all current values
+
+
+type Firebase = {
+  apiKey: string;
+  authDomain: string;
+  databaseURL: string;
+  projectId: string;
+  storageBucket: string;
+  messagingSenderId: string;
 };
 
-type Value = { 
-    label: string; 
-    value: string | number
+type GooglePlaces = {
+  key: string;
 };
+
+type DataFormProps = {
+  /**
+   * The fields in your data-form
+   */
+  fields: Field[];
+
+  /**
+   * Values object. keys should be the same as field.field prop.
+   */
+  values: Object;
+
+  /**
+   * vectorIcons object
+   */
+  vectorIcons: Object;
+
+  /**
+   * expo object
+   */
+  expo: Object;
+
+  /**
+   * config for image inputs
+   */
+  firebaseConfig?: Firebase;
+
+  /**
+   * config for location input
+   */
+  googlePlacesConfig?: GooglePlaces;
+
+  /**
+   * Title of complete button
+   */
+  completeButton?: string;
+
+  /**
+   * background color code of complete button row
+   */
+  completeButtonBackground?: string;
+
+  /**
+   * Object where keys are inputtype names, and values are React.Node that's the Input component
+   */
+  extraInputTypes?: Object;
+
+  /**
+   * If true, the form doesn't use a scrollview with flex of 1
+   */
+  noScroll?: boolean;
+
+  /**
+   * if true, all values are submitted on completion. Also unchanged ones
+   */
+  submitAll?: boolean;
+
+  /**
+   * mutation function. should return a promise with result data
+   */
+  mutate: (vars: Object) => Promise<any>;
+
+  /**
+   * what to do after mutate promise resolves
+   */
+  onComplete?: (data: object, values: object) => void;
+
+  /**
+   * if true, form sets values to undefined once completed
+   */
+  clearOnComplete?: boolean;
+
+  /**
+   * your navigation screenProps
+   */
+  screenProps: any;
+
+  /**
+   * your react-navigation prop
+   */
+  navigation: any;
+};
+
+
 ```
 
-Other props:
+
+**fields**: Array of Field-objects you want in the form. This is a field-object:
+
 ```ts
+  type Field = {
+  /**
+   * REQUIRED. key of the field (should be the same as the key used in the values-prop of DataForm
+   */
+  field: string;
 
-  values: object;
-  vectorIcons: Object; //react-native-vector-icons from expo
-  expo: Object; // expo object
-  firebaseConfig?: Firebase;
-  googlePlacesConfig?: GooglePlaces;
-  completeButton?: string;
-  completeButtonBackground?: string; // color code
-  extraInputTypes?: React.Node[];
-  noScroll?: boolean;
-  submitAll?: boolean;
-  onComplete?: () => void;
-  mutate: (vars: Object) => any;
-  screenProps: any;
-  navigation: any;
+  /**
+   * title of the field
+   */
+  title?: string;
 
+  /**
+   * some types require multiple titles
+   */
+  titles?: object;
+
+  /**
+   * type of the field, if not set, it uses a TextField
+   */
+  type?: string;
+
+  /**
+   * possible values of the field if it's a input type where you can choose between values
+   */
+  values?: string[] | Value[];
+
+  /**
+   * optional info for the component which is exposed via a clickable info icon
+   */
+  info?: string;
+
+  /**
+   * option description text
+   */
+  description?: string;
+
+  /**
+   * optional description component
+   */
+  descriptionComponent?: React.Node;
+
+  /**
+   * section title, if new section above this field. true if titleless section starts here
+   */
+  startSection?: string | boolean;
+
+  /**
+   * optionally, if its a new section, add an description
+   */
+  startSectionDescription?: string;
+
+  /**
+   * validate input and return if it's valid or not
+   */
+  validate?: (value: any) => boolean;
+
+  /**
+   * do something when the value changes
+   */
+  onChange?: (value: any) => void;
+
+  /**
+   * if it's invalid, show this error message
+   */
+  errorMessage?: string;
+
+  /**
+   * keys: output of Inputfield --> values: db-field (string) or db-fields (string[])
+   */
+  mapFieldsToDB?: object;
+
+  /**
+   * hide the input field based on all current values
+   */
+  hidden?: (allCurrentValues: object) => boolean;
+};
+
+
+ type Value = {
+  label: string;
+  value: string | number;
+};
 
 ```
 
