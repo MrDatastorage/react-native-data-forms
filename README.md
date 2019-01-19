@@ -239,7 +239,8 @@ export default Example;
 
 This will look like this:
 
-<blockquote class="imgur-embed-pub" lang="en" data-id="a/qRfOURy"></blockquote><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script>
+![img](https://i.ibb.co/WpqfRLq/gif1forms.gif)
+![img](https://i.ibb.co/WpqfRLq/gif2forms.gif)
 
 
 ### Props
