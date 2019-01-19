@@ -309,4 +309,4 @@ If you want, you can create PR's for this (I'm not gonna do it):
 If anyone using this likes to contribute, please contact me so we can discuss about the way to implement things. [Here](https://karsens.com) you can find a contact button.
 
 ## Hire me
-If you need consulting about whether or not it's possible to use this in your codebase - contact me - I'll help you for free. If you need help to convert your codebase to use this library, I can help you with that. [Hire me](https://karsens.com/hire-me/). 
+If you need consulting about whether or not it's possible to use this in your codebase - contact me - I'll advise you for free. If you need help to convert your codebase to use this library, I can help you with that. [Hire me](https://karsens.com/hire-me/). 
