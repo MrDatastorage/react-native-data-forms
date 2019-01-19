@@ -270,7 +270,7 @@ type Value = {
 ```
 
 Other props:
-```js
+```ts
 
   values: object;
   vectorIcons: Object; //react-native-vector-icons from expo
