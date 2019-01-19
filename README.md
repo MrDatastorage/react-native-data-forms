@@ -12,14 +12,17 @@ The goal of this function is to seperate semantics from data from implementation
 
 ## Example Use
 
-First create a wrapper of our component:
+**Step 1:** Create a wrapper of our component:
 ```js
 import * as React from "react";
 
 import _DataForm from "react-native-data-forms";
 import { Field } from "react-native-data-forms/types";
 
+// import extra input types, for example an emailsOrUsersInput type you created yourself that takes a text and suggests an email or users from your userbase.
 import emailsOrUsers from "./fat/emailsOrUsersInput";
+
+//if you want to use image upload, give a firebase Config here.
 const firebaseConfig = {
   apiKey: "?????",
   authDomain: "?????",
@@ -29,10 +32,12 @@ const firebaseConfig = {
   messagingSenderId: "?????"
 };
 
+// if you want to use the location input type, we need a google places key.
 const googlePlacesConfig = {
   key: "?????"
 };
 
+// Create and export DataForms with default props installed.
 const DataForm = props => {
   const allProps = {
     ...props,
@@ -48,7 +53,7 @@ const DataForm = props => {
 export { DataForm };
 ```
 
-Then, if you need the `location` or `image` type, you need to add the data-forms screens to your navigation stack where you want the image-screen and location-screen to load, like so:
+**Step 2:** if you need the `location` or `image` type, you need to add the data-forms screens to your navigation stack where you want the image-screen and location-screen to load, like so:
 
 ```js
 import { screens } from "react-native-data-forms";
@@ -63,9 +68,9 @@ const Stack = createStackNavigator(
 
 ```
 
-Then you're all set up! You can use the component like this: This is an example with all default types:
+You're all set up! You can use the component like this: This is an example with all default types:
 
-```
+```js
 class ExampleScreen extends React.Component {
 
   render() {
