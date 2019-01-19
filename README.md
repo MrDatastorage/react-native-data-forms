@@ -10,8 +10,6 @@ The goal of this function is to seperate semantics from data from implementation
 
 ## Documentation
 
-### Props
-
 ## Example Use
 
 First create a wrapper of our component:
@@ -237,6 +235,49 @@ export default CreateChannelScreen;
 This will look like this:
 
 <img src="/example1.png" width="250" />
+
+
+
+### Props
+
+
+```js
+
+type Value = { label: string; value: string | number };
+
+type Field = {
+  description: string;
+  descriptionComponent: React.Node;
+  values: Value[] | undefined;
+  startSection: string;
+  errorMessage: string;
+  startSectionDescription: string;
+  field: string;
+  mapFieldsToDB: object; // keys: output of Inputfield --> values: db-field (string) or db-fields (string[])
+  title: string;
+  type: string;
+  hidden: (allCurrentValues: object) => boolean; //hide the input field based on all current values+state
+};
+
+
+  fields: Field[];
+  values: object;
+  vectorIcons: Object; //react-native-vector-icons from expo
+  expo: Object; // expo object
+  firebaseConfig?: Firebase;
+  googlePlacesConfig?: GooglePlaces;
+  completeButton?: string;
+  completeButtonBackground?: string; // color code
+  extraInputTypes?: React.Node[];
+  noScroll?: boolean;
+  submitAll?: boolean;
+  onComplete?: () => void;
+  mutate: (vars: Object) => any;
+  screenProps: any;
+  navigation: any;
+
+
+```
 
 ## Expanding
 
