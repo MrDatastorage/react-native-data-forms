@@ -247,7 +247,7 @@ This will look like this:
 
 **fields**: Array of fields you want in the form. This is a field-object:
 
-```js
+```ts
 type Field = {
   field: string; //REQUIRED. key of the field (should be the same as the key used in the values-prop of DataForm
   title?: string; //title of the field
