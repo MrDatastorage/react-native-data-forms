@@ -34,6 +34,7 @@ export default ({
     country: "",
     latitude: 0,
     longitude: 0,
+    locationIsEmpty: true,
     mapsurl: "",
     global: true
   };

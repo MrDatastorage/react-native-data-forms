@@ -87,77 +87,99 @@ class DataForm extends React.Component<DataFormProps, DataFormState> {
               values[field] = stringFromObjectArray(this.state[field]);
               // console.log('selectMultiple: values[field] =', values[field]);
             }
-          } else if (type === "image") {
-            if (mapFieldsToDB) {
-              if (mapFieldsToDB.url) {
-                if (Array.isArray(mapFieldsToDB.url)) {
-                  mapFieldsToDB.url.forEach(dbKey => {
-                    values[dbKey] = this.state[dbKey];
-                  });
-                } else {
-                  values[mapFieldsToDB.url] = this.state[mapFieldsToDB.url];
-                }
-              }
+            // } else if (type === "image") {
+            //   if (mapFieldsToDB) {
+            //     if (mapFieldsToDB.url) {
+            //       if (Array.isArray(mapFieldsToDB.url)) {
+            //         mapFieldsToDB.url.forEach(dbKey => {
+            //           values[dbKey] = this.state[dbKey];
+            //         });
+            //       } else {
+            //         values[mapFieldsToDB.url] = this.state[mapFieldsToDB.url];
+            //       }
+            //     }
 
-              if (mapFieldsToDB.thumbUrl) {
-                if (Array.isArray(mapFieldsToDB.thumbUrl)) {
-                  mapFieldsToDB.thumbUrl.forEach(dbKey => {
-                    values[dbKey] = this.state[dbKey];
-                  });
-                } else {
-                  values[mapFieldsToDB.thumbUrl] = this.state[
-                    mapFieldsToDB.thumbUrl
-                  ];
-                }
-              }
+            //     if (mapFieldsToDB.thumbUrl) {
+            //       if (Array.isArray(mapFieldsToDB.thumbUrl)) {
+            //         mapFieldsToDB.thumbUrl.forEach(dbKey => {
+            //           values[dbKey] = this.state[dbKey];
+            //         });
+            //       } else {
+            //         values[mapFieldsToDB.thumbUrl] = this.state[
+            //           mapFieldsToDB.thumbUrl
+            //         ];
+            //       }
+            //     }
 
-              values.IMAGE = undefined;
-            } else {
-              values[field] = this.state[field];
-            }
-          } else if (type === "dates") {
-            if (field === "STARTEND") {
-              if (mapFieldsToDB) {
-                if (mapFieldsToDB.start && this.state[mapFieldsToDB.start])
-                  values[mapFieldsToDB.start] = this.state[mapFieldsToDB.start];
-                if (mapFieldsToDB.end && this.state[mapFieldsToDB.end])
-                  values[mapFieldsToDB.end] = this.state[mapFieldsToDB.end];
-              } else {
-                values.start = this.state.start
-                  ? this.state.start
-                  : values.start;
-                values.end = this.state.end ? this.state.end : values.end;
-              }
-            }
-          } else if (type === "location") {
-            if (field === "LOCATION") {
-              console.log("values are ", values, "state is", this.state);
+            //     values.IMAGE = undefined;
+            //   } else {
+            //     values[field] = this.state[field];
+            //   }
+            // } else if (type === "dates") {
+            //   if (field === "STARTEND") {
+            //     if (mapFieldsToDB) {
+            //       if (mapFieldsToDB.start && this.state[mapFieldsToDB.start])
+            //         values[mapFieldsToDB.start] = this.state[mapFieldsToDB.start];
+            //       if (mapFieldsToDB.end && this.state[mapFieldsToDB.end])
+            //         values[mapFieldsToDB.end] = this.state[mapFieldsToDB.end];
+            //     } else {
+            //       values.start = this.state.start
+            //         ? this.state.start
+            //         : values.start;
+            //       values.end = this.state.end ? this.state.end : values.end;
+            //     }
+            //   }
+            // } else if (type === "location") {
+            //   if (field === "LOCATION") {
+            //     console.log("values are ", values, "state is", this.state);
 
-              if (mapFieldsToDB) {
-                if (mapFieldsToDB.address)
-                  values[mapFieldsToDB.address] = this.state.address;
-                if (mapFieldsToDB.city)
-                  values[mapFieldsToDB.city] = this.state.city;
-                if (mapFieldsToDB.country)
-                  values[mapFieldsToDB.country] = this.state.country;
-                if (mapFieldsToDB.latitude)
-                  values[mapFieldsToDB.latitude] = this.state.latitude;
-                if (mapFieldsToDB.longitude)
-                  values[mapFieldsToDB.longitude] = this.state.longitude;
-                if (mapFieldsToDB.mapsurl)
-                  values[mapFieldsToDB.mapsurl] = this.state.mapsurl;
-                if (mapFieldsToDB.locationIsEmpty)
-                  values[mapFieldsToDB.locationIsEmpty] =
-                    !this.state.latitude || !this.state.longitude;
+            //     if (mapFieldsToDB) {
+            //       if (mapFieldsToDB.address)
+            //         values[mapFieldsToDB.address] = this.state.address;
+            //       if (mapFieldsToDB.city)
+            //         values[mapFieldsToDB.city] = this.state.city;
+            //       if (mapFieldsToDB.country)
+            //         values[mapFieldsToDB.country] = this.state.country;
+            //       if (mapFieldsToDB.latitude)
+            //         values[mapFieldsToDB.latitude] = this.state.latitude;
+            //       if (mapFieldsToDB.longitude)
+            //         values[mapFieldsToDB.longitude] = this.state.longitude;
+            //       if (mapFieldsToDB.mapsurl)
+            //         values[mapFieldsToDB.mapsurl] = this.state.mapsurl;
+            //       if (mapFieldsToDB.locationIsEmpty)
+            //         values[mapFieldsToDB.locationIsEmpty] =
+            //           !this.state.latitude || !this.state.longitude;
 
-                values.LOCATION = undefined;
-              } else {
-                values.address = values.LOCATION.address;
-              }
-            }
+            //       values.LOCATION = undefined;
+            //     } else {
+            //       values.address = values.LOCATION.address;
+            //     }
+            //   }
           } else {
-            if (this.state[field] !== null && this.state[field] !== undefined) {
-              values[field] = this.state[field];
+            if (mapFieldsToDB) {
+              //if mapFieldsToDB is used, the field value itself is unimportant and probably unused
+              values[field] = undefined;
+
+              Object.keys(mapFieldsToDB).forEach(f => {
+                const dbKey = mapFieldsToDB[f];
+
+                if (this.state[f] !== null && this.state[f] !== undefined) {
+                  if (Array.isArray(dbKey)) {
+                    dbKey.forEach(oneKey => {
+                      values[oneKey] = this.state[f];
+                    });
+                  } else {
+                    values[dbKey] = this.state[f];
+                  }
+                }
+              });
+            } else {
+              if (
+                this.state[field] !== null &&
+                this.state[field] !== undefined
+              ) {
+                values[field] = this.state[field];
+              }
             }
           }
 
