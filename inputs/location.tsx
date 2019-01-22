@@ -88,7 +88,5 @@ export default ({
     }
   ];
 
-  return (
-    <Menu vectorIcons={vectorIcons} backgroundColor="transparent" data={menu} />
-  );
+  return <Menu backgroundColor="transparent" data={menu} />;
 };
