@@ -3,7 +3,14 @@ import React from "react";
 import { C } from "./constants";
 import Touchable from "react-native-platform-touchable";
 
-class Button extends React.Component {
+type Props = {
+  onPress: () => void;
+  style?: object;
+  disabled?: boolean;
+  title: string;
+};
+
+class Button extends React.Component<Props> {
   render() {
     return Platform.OS === "ios" ? (
       <RNButton {...this.props} />

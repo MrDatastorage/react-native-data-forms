@@ -48,10 +48,6 @@ class DataForm extends React.Component<DataFormProps, DataFormState> {
 
     console.log("Go through constructor");
 
-    this.init(props);
-  }
-
-  init(props: DataFormProps) {
     this.state = { loading: false };
 
     props.fields.forEach(field => {
@@ -228,14 +224,15 @@ class DataForm extends React.Component<DataFormProps, DataFormState> {
 
   render() {
     const {
-      navigation,
       fields,
       values,
       noScroll,
+      //config things v
       expo,
       extraInputTypes,
       firebaseConfig,
-      googlePlacesConfig
+      googlePlacesConfig,
+      navigation
     } = this.props;
 
     const allFields = fields.map((field, index) => {
