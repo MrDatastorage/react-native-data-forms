@@ -23,6 +23,8 @@ export default ({
   expo,
   firebaseConfig
 }) => {
+  if (!expo) return <Text>This input-type only works with expo</Text>;
+
   let urlState, urlValue, thumbState, thumbValue;
   const urlFields: string | string[] = mapFieldsToDB && mapFieldsToDB.url;
   const thumbUrlField = mapFieldsToDB && mapFieldsToDB.thumbUrl;

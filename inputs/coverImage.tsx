@@ -3,7 +3,8 @@ import {
   View,
   TouchableOpacity,
   ActivityIndicator,
-  Keyboard
+  Keyboard,
+  Text
 } from "react-native";
 import SuperImage from "react-native-super-image";
 import { FontAwesome } from "react-native-vector-icons";
@@ -25,6 +26,8 @@ export default ({
   expo,
   firebaseConfig
 }) => {
+  if (!expo) return <Text>This input-type only works with expo</Text>;
+
   let urlState, urlValue, thumbState, thumbValue;
   const urlFields: string | string[] = mapFieldsToDB && mapFieldsToDB.url;
   const thumbUrlField = mapFieldsToDB && mapFieldsToDB.thumbUrl;
