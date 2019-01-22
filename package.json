@@ -1,6 +1,6 @@
 {
   "name": "react-native-data-forms",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "Create beautiful forms that submit data to redux, a graphql mutation, or an api in many different input types",
   "main": "index.tsx",
   "repository": "git@github.com:EAT-CODE-KITE-REPEAT/react-native-data-forms.git",
