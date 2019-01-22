@@ -2,7 +2,7 @@
 
 Create beautiful forms that submit data to redux, a graphql mutation, or an api in many different input types
 
-This component makes data from any source editable using react native components. The data can be of many different types. If you have an app with many data properties that need to be edited, this can be a huge boilerplate reducer! For me it was, at least. When I introduced it it instantly removed >1000 LOC in my codebase. Then, I doubled the amount of pages with only a few dozen LOC added. Without this component that would be thousands of LOC.
+React-native-data-forms is an opinionated yet very flexible library that makes data from any source editable using react native components. The data can be of many different types. If you have an app with many data properties that need to be edited, this can be a huge boilerplate reducer! For me it was, at least. When I introduced it it instantly removed >1000 LOC in my codebase. Then, I doubled the amount of pages with only a few dozen LOC added. Without this component that would be thousands of LOC.
 
 This component is built for mutations of React Apollo GraphQL, but it can potentially also be used together with local databases, redux, or even state!
 
@@ -43,7 +43,6 @@ const DataForm = props => {
   const allProps = {
     ...props,
     expo,
-    vectorIcons,
     firebaseConfig,
     googlePlacesConfig,
     extraInputTypes: { emailsOrUsers }
@@ -54,7 +53,16 @@ const DataForm = props => {
 export { DataForm };
 ```
 
-**Step 2:** if you need the `location` or `image` type, you need to add the data-forms screens to your navigation stack where you want the image-screen and location-screen to load, like so:
+**Step 2:**
+This library has a few peer dependencies you need to have installed in order to use all input types
+
+- For most: `yarn add react-native-vector-icons` (Or use @expo/vector-icons)
+- For `date`: `yarn add react-native-date-picker`
+- For `location`: `yarn add react-native-google-places-autocomplete`
+- For `selectOne`: `yarn add react-native-modal-selector`
+- For `image` or `cover-image`: `yarn add react-native-super-image`
+
+**Step 3:** if you need the `location` or `image` type, you need to add the data-forms screens to your navigation stack where you want the image-screen and location-screen to load, like so:
 
 ```js
 import { screens } from "react-native-data-forms";
