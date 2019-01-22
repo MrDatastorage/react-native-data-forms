@@ -95,9 +95,7 @@ class Input extends React.Component<InputProps> {
 
     let addedProps = {};
 
-    if (type === "emailsOrUsers") {
-      addedProps = { navigation };
-    } else if (type === "location") {
+    if (type === "location") {
       addedProps = { navigation, googlePlacesConfig };
     } else if (type === "image" || type === "coverImage") {
       addedProps = { mapFieldsToDB, navigation, firebaseConfig };

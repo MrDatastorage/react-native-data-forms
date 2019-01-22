@@ -67,6 +67,8 @@ class DataForm extends React.Component<DataFormProps, DataFormState> {
   saveValues = () => {
     const { fields, onComplete, submitAll } = this.props;
 
+    // TODO: All custom state differences should be ported inside input type components itself, instead of here.....
+
     let values = submitAll ? this.getAllCurrentValues() : {};
 
     this.setState({ loading: true }, () => {
@@ -84,26 +86,6 @@ class DataForm extends React.Component<DataFormProps, DataFormState> {
             if (this.state[field] !== null) {
               values[field] = stringFromObjectArray(this.state[field]);
               // console.log('selectMultiple: values[field] =', values[field]);
-            }
-
-            //should make this always work as long as it's properly defined in the field object
-            //no custom components here.
-          } else if (type === "emailsOrUsers") {
-            if (field === "EMAILS_AND_USERS") {
-              values.emails = this.state[field]
-                .filter(x => x.email)
-                .map(x => x.email)
-                .join(", ");
-              values.userids = this.state[field]
-                .filter(x => x.user)
-                .map(x => x.user.id)
-                .join(", ");
-
-              console.log("VALUES=", values);
-            } else {
-              if (this.state[field] !== null) {
-                values[field] = this.state[field];
-              }
             }
           } else if (type === "image") {
             if (mapFieldsToDB) {
