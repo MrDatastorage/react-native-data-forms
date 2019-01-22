@@ -37,7 +37,6 @@ import * as React from "react";
 import expo from "expo";
 
 import _DataForm from "react-native-data-forms";
-import { Field } from "react-native-data-forms/types";
 
 // Optional: import extra input types, for example an emailsOrUsersInput type you created yourself that takes a text and suggests an email or users from your userbase.
 import emailsOrUsers from "./fat/emailsOrUsersInput";
@@ -77,7 +76,6 @@ If you will import your own data-types and don't use ours:
 ```js
 import * as React from "react";
 import _DataForm from "react-native-data-forms";
-import { Field } from "react-native-data-forms/types";
 
 // Import extra input types
 import emailsOrUsers from "./fat/emailsOrUsersInput";
