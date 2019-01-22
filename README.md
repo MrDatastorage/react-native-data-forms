@@ -83,12 +83,34 @@ This library has a few peer dependencies you need to have installed in order to 
 
 **Step 3:** if you need the `location` or `image` type, you need to add the data-forms screens to your navigation stack where you want the image-screen and location-screen to load, like so:
 
+**react-navigation:**
+
 ```js
 import { screens } from "react-native-data-forms";
 
 const Stack = createStackNavigator({
   root: { screen: HomeScreen },
   ...screens
+});
+```
+
+**wix/react-native-navigation:**
+
+```js
+import { Navigation } from "react-native-navigation";
+import { screens } from "react-native-data-forms";
+
+Object.keys(screens).forEach(key => {
+  const { screen, navigationOptions } = screens[key];
+
+  if (navigationOptions && navigationOptions.header) {
+    // make sure not to render a header for this wix nav
+  }
+
+  const route = key;
+  const props = {};
+
+  Navigation.registerComponent(route, () => screen, ...props);
 });
 ```
 
