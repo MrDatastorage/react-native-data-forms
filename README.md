@@ -277,7 +277,7 @@ This will look like this:
 
 ### Props
 
-[See types-file](/blob/master/types.tsx)
+[See types-file](/types.tsx)
 
 ## Expanding
 
