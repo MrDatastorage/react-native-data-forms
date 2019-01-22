@@ -291,6 +291,6 @@ The prop `mutate` is a function that based on all filled in values has to return
 
 ## Hire me
 
-<img src="./resources/developer.png" width="100" style="border-radius:50" />
+<img src="./resources/developer.png" width="100" style="border-radius:50px" />
 
 If you need consulting about whether or not it's possible to use this in your codebase - contact me - I'll advise you for free. If you need help to convert your codebase to use this library, I can help you with that. [Hire me](https://karsens.com/hire-me/).
