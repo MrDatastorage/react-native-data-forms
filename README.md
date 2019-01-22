@@ -54,7 +54,7 @@ export { DataForm };
 ```
 
 **Step 2:**
-This library has a few peer dependencies you need to have installed in order to use all input types
+This library has a few peer dependencies you need to have installed in order to use all input types. Feel free no to install the ones of the input types you don't use.
 
 - For most: `yarn add react-native-vector-icons` (Or use @expo/vector-icons)
 - For `date`: `yarn add react-native-date-picker`
