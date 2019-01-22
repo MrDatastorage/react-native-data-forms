@@ -14,16 +14,19 @@ The goal of this function is to seperate semantics from data from implementation
 
 **Step 1:** Create a wrapper of our component:
 
+If you want to use our data-types:
+
 ```js
 import * as React from "react";
+import expo from "expo";
 
 import _DataForm from "react-native-data-forms";
 import { Field } from "react-native-data-forms/types";
 
-// import extra input types, for example an emailsOrUsersInput type you created yourself that takes a text and suggests an email or users from your userbase.
+// Optional: import extra input types, for example an emailsOrUsersInput type you created yourself that takes a text and suggests an email or users from your userbase.
 import emailsOrUsers from "./fat/emailsOrUsersInput";
 
-//if you want to use image upload, give a firebase Config here.
+// Optional: if you want to use image upload (image and coverImage), give a firebase Config here.
 const firebaseConfig = {
   apiKey: "?????",
   authDomain: "?????",
@@ -33,7 +36,7 @@ const firebaseConfig = {
   messagingSenderId: "?????"
 };
 
-// if you want to use the location input type, we need a google places key.
+// Optional: if you want to use the location input type, we need a google places key.
 const googlePlacesConfig = {
   key: "?????"
 };
@@ -50,6 +53,22 @@ const DataForm = props => {
   return <_DataForm {...allProps} />;
 };
 
+export { DataForm };
+```
+
+If you will import your own data-types and don't use ours:
+
+```js
+import * as React from "react";
+import _DataForm from "react-native-data-forms";
+import { Field } from "react-native-data-forms/types";
+
+// Import extra input types
+import emailsOrUsers from "./fat/emailsOrUsersInput";
+
+const DataForm = props => {
+  return <_DataForm {...props} extraInputTypes={{ emailsOrUsers }} />;
+};
 export { DataForm };
 ```
 
@@ -264,6 +283,10 @@ If you want, you can create PR's for this:
 - bare react-native support
 
 If anyone using this likes to contribute, please contact me so we can discuss about the way to implement things. [Here](https://karsens.com) you can find a contact button.
+
+## How to add my own input types?
+
+Coming soon. For now, have a look [here](./inputs) how we do it.
 
 ## F.A.Q.
 
