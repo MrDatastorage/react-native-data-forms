@@ -13,6 +13,7 @@ The goal of this function is to seperate semantics from data from implementation
 ## Example Use
 
 **Step 1:** Create a wrapper of our component:
+
 ```js
 import * as React from "react";
 
@@ -58,17 +59,13 @@ export { DataForm };
 ```js
 import { screens } from "react-native-data-forms";
 
-
-const Stack = createStackNavigator(
-  {
-    root: { screen: HomeScreen },
-    ...screens
-  }
-);
-
+const Stack = createStackNavigator({
+  root: { screen: HomeScreen },
+  ...screens
+});
 ```
 
-You're all set up! You can use the component like this: This is an example with all default types:
+You're all set up! You can use the component like this: This is an example with all default types, getting data from a GraphQL query, sendig it to a GraphQL mutation:
 
 ```js
 import * as React from "react";
@@ -78,15 +75,9 @@ import { Alert } from "react-native";
 
 class Example extends React.Component {
   render() {
-    const defaultComplete = () => Alert.alert("Saved");
+    const { data, mutate } = this.props;
 
-    // this could be an apollo mutation, an api call, or setting a redux state.
-    const mutate = v =>
-      new Promise(function(resolve, reject) {
-        setTimeout(function() {
-          resolve(v);
-        }, 300);
-      });
+    const defaultComplete = () => Alert.alert("Saved");
 
     const fields: Field[] = [
       {
@@ -203,239 +194,90 @@ class Example extends React.Component {
       }
     ];
 
-    let values = {
-      coverImage: null,
-      image: null,
-      text: "",
-      textArea: "",
-      numbers: "",
-      phone: "",
-      date: new Date(Date.now()),
-      color: "",
-      boolean: true,
-      selectOne: "",
-      selectMultiple: "",
-      categories: "",
-      dictionary: "",
-      eventAt: new Date(Date.now()),
-      eventEndAt: new Date(Date.now())
-    };
-
     return (
       <DataForm
         {...this.props}
         fields={fields}
         onComplete={defaultComplete}
         mutate={vars => mutate(vars)}
-        values={values}
+        values={data.example}
       />
     );
   }
 }
 
-export default Example;
+const query = gql`
+  query Example {
+    example {
+      coverImage
+      image
+      text
+      textArea
+      numbers
+      phone
+      date
+      color
+      boolean
+      selectOne
+      selectMultiple
+      categories
+      dictionary
+      eventAt
+    }
+  }
+`;
 
+const mutation = gql`
+  mutation ExampleMutation(
+    $coverImage: String
+    $image: String
+    $text: String
+    $textArea: String
+    $numbers: Int
+    $phone: String
+    $date: Date
+    $color: String
+    $boolean: Boolean
+    $selectOne: String
+    $selectMultiple: String
+    $categories: String
+    $dictionary: String
+    $eventAt: Date
+  ) {
+    exampleMutation(
+      coverImage: $coverImage
+      image: $image
+      text: $text
+      textArea: $textArea
+      numbers: $numbers
+      phone: $phone
+      date: $date
+      color: $color
+      boolean: $boolean
+      selectOne: $selectOne
+      selectMultiple: $selectMultiple
+      categories: $categories
+      dictionary: $dictionary
+      eventAt: $eventAt
+    )
+  }
+`;
+
+export default compose(
+  graphql(query),
+  graphql(mutation)
+)(Example);
 ```
 
 This will look like this:
 
-![img](https://im.ezgif.com/tmp/ezgif-1-20f8cf41380f.gif)
-![img](https://im.ezgif.com/tmp/ezgif-1-e9f1bb923190.gif)
-
+![1](./resources/data-forms-1.gif)
+![2](./resources/data-forms-2.gif)
+![3](./resources/data-forms-3.gif)
 
 ### Props
 
-
-All props:
-```ts
-
-
-type Firebase = {
-  apiKey: string;
-  authDomain: string;
-  databaseURL: string;
-  projectId: string;
-  storageBucket: string;
-  messagingSenderId: string;
-};
-
-type GooglePlaces = {
-  key: string;
-};
-
-type DataFormProps = {
-  /**
-   * The fields in your data-form
-   */
-  fields: Field[];
-
-  /**
-   * Values object. keys should be the same as field.field prop.
-   */
-  values: Object;
-
-  /**
-   * vectorIcons object
-   */
-  vectorIcons: Object;
-
-  /**
-   * expo object
-   */
-  expo: Object;
-
-  /**
-   * config for image inputs
-   */
-  firebaseConfig?: Firebase;
-
-  /**
-   * config for location input
-   */
-  googlePlacesConfig?: GooglePlaces;
-
-  /**
-   * Title of complete button
-   */
-  completeButton?: string;
-
-  /**
-   * background color code of complete button row
-   */
-  completeButtonBackground?: string;
-
-  /**
-   * Object where keys are inputtype names, and values are React.Node that's the Input component
-   */
-  extraInputTypes?: Object;
-
-  /**
-   * If true, the form doesn't use a scrollview with flex of 1
-   */
-  noScroll?: boolean;
-
-  /**
-   * if true, all values are submitted on completion. Also unchanged ones
-   */
-  submitAll?: boolean;
-
-  /**
-   * mutation function. should return a promise with result data
-   */
-  mutate: (vars: Object) => Promise<any>;
-
-  /**
-   * what to do after mutate promise resolves
-   */
-  onComplete?: (data: object, values: object) => void;
-
-  /**
-   * if true, form sets values to undefined once completed
-   */
-  clearOnComplete?: boolean;
-
-  /**
-   * your navigation screenProps
-   */
-  screenProps: any;
-
-  /**
-   * your react-navigation prop
-   */
-  navigation: any;
-};
-
-
-```
-
-
-**fields**: Array of Field-objects you want in the form. This is a field-object:
-
-```ts
-  type Field = {
-  /**
-   * REQUIRED. key of the field (should be the same as the key used in the values-prop of DataForm
-   */
-  field: string;
-
-  /**
-   * title of the field
-   */
-  title?: string;
-
-  /**
-   * some types require multiple titles
-   */
-  titles?: object;
-
-  /**
-   * type of the field, if not set, it uses a TextField
-   */
-  type?: string;
-
-  /**
-   * possible values of the field if it's a input type where you can choose between values
-   */
-  values?: string[] | Value[];
-
-  /**
-   * optional info for the component which is exposed via a clickable info icon
-   */
-  info?: string;
-
-  /**
-   * option description text
-   */
-  description?: string;
-
-  /**
-   * optional description component
-   */
-  descriptionComponent?: React.Node;
-
-  /**
-   * section title, if new section above this field. true if titleless section starts here
-   */
-  startSection?: string | boolean;
-
-  /**
-   * optionally, if its a new section, add an description
-   */
-  startSectionDescription?: string;
-
-  /**
-   * validate input and return if it's valid or not
-   */
-  validate?: (value: any) => boolean;
-
-  /**
-   * do something when the value changes
-   */
-  onChange?: (value: any) => void;
-
-  /**
-   * if it's invalid, show this error message
-   */
-  errorMessage?: string;
-
-  /**
-   * keys: output of Inputfield --> values: db-field (string) or db-fields (string[])
-   */
-  mapFieldsToDB?: object;
-
-  /**
-   * hide the input field based on all current values
-   */
-  hidden?: (allCurrentValues: object) => boolean;
-};
-
-
- type Value = {
-  label: string;
-  value: string | number;
-};
-
-```
+[See types-file](/blob/master/types.tsx)
 
 ## Expanding
 
@@ -448,12 +290,13 @@ In the future, I'm planning to add these features to the codebase.
 - File upload
 - Step-by-step form functionality that walks through all inputs one by one, navigating to the next input using a stack navigator. This can be achieved by adding a walkThrough bool prop and a function getScreens that returns all Forms seperately in screens-objects which can be added to your stack-navigator dynamically.
 
-If you want, you can create PR's for this (I'm not gonna do it):
+If you want, you can create PR's for this:
+
 - Wix navigation support
 - bare react-native support
-
 
 If anyone using this likes to contribute, please contact me so we can discuss about the way to implement things. [Here](https://karsens.com) you can find a contact button.
 
 ## Hire me
-If you need consulting about whether or not it's possible to use this in your codebase - contact me - I'll advise you for free. If you need help to convert your codebase to use this library, I can help you with that. [Hire me](https://karsens.com/hire-me/). 
+
+If you need consulting about whether or not it's possible to use this in your codebase - contact me - I'll advise you for free. If you need help to convert your codebase to use this library, I can help you with that. [Hire me](https://karsens.com/hire-me/).
