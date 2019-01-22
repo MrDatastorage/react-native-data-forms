@@ -240,7 +240,6 @@ class DataForm extends React.Component<DataFormProps, DataFormState> {
       noScroll,
       fields,
       values,
-      vectorIcons,
       expo,
       screenProps,
       navigation
@@ -254,7 +253,6 @@ class DataForm extends React.Component<DataFormProps, DataFormState> {
       values,
       extraInputTypes,
       noScroll,
-      vectorIcons,
       expo,
       allCurrentValues,
       device: screenProps.device,

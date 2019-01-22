@@ -20,11 +20,8 @@ class FormComponent extends React.Component {
       fields,
       values,
       noScroll,
-      vectorIcons,
       expo,
       allCurrentValues,
-      device,
-      me,
       setState,
       state,
       extraInputTypes,
@@ -57,13 +54,9 @@ class FormComponent extends React.Component {
           key={index}
           state={state}
           setState={newState => setState(newState)}
-          //what to do with this?
-          device={device}
-          me={me}
           //all props below are about config / navigating
           navigation={navigation}
           extraInputTypes={extraInputTypes}
-          vectorIcons={vectorIcons}
           expo={expo}
           firebaseConfig={firebaseConfig}
           googlePlacesConfig={googlePlacesConfig}

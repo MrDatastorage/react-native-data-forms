@@ -7,6 +7,7 @@ import {
   ScrollView
 } from "react-native";
 import Photo from "./photo.screen";
+import { MaterialIcons } from "react-native-vector-icons";
 
 export default class GalleryScreen extends React.Component {
   state = {
@@ -74,8 +75,6 @@ export default class GalleryScreen extends React.Component {
   );
 
   render() {
-    const { MaterialIcons } = this.props.navigation.state.params.vectorIcons;
-
     return (
       <View style={styles.container}>
         <View style={styles.navbar}>

@@ -6,18 +6,11 @@ import {
   Text,
   View
 } from "react-native";
+import { FontAwesome } from "react-native-vector-icons";
 
 class Categories extends React.Component {
   render() {
-    const {
-      state,
-      field,
-      setState,
-      value,
-      clearInput,
-      vectorIcons
-    } = this.props;
-    const { FontAwesome } = vectorIcons;
+    const { state, field, setState, value, clearInput } = this.props;
 
     const currentValues2 =
       state[field] !== undefined

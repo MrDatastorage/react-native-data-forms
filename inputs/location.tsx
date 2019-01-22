@@ -1,6 +1,7 @@
 import React from "react";
 import { View, TouchableOpacity, Text } from "react-native";
 import Menu from "../menu.component";
+import { FontAwesome } from "react-native-vector-icons";
 
 export default ({
   value,
@@ -8,11 +9,8 @@ export default ({
   setUpperState,
   title,
   navigation,
-  vectorIcons,
   googlePlacesConfig
 }) => {
-  const { FontAwesome } = vectorIcons;
-
   const location =
     state.address !== undefined
       ? {

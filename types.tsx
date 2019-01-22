@@ -102,14 +102,9 @@ export type DataFormProps = {
   values: Object;
 
   /**
-   * vectorIcons object
-   */
-  vectorIcons: Object;
-
-  /**
    * expo object
    */
-  expo: Object;
+  expo?: Object;
 
   /**
    * config for image inputs
@@ -125,6 +120,16 @@ export type DataFormProps = {
    * Title of complete button
    */
   completeButton?: string;
+
+  /**
+   * Get the onComplete function to put it somewhere else, for example, in the navbar.
+   */
+  withComplete?: () => void;
+
+  /**
+   * Get the reset function to put it somewhere, for example, in the navbar.
+   */
+  withReset?: () => void;
 
   /**
    * background color code of complete button row
@@ -179,13 +184,10 @@ export type Value = {
 
 export type InputProps = Field & {
   allCurrentValues: object;
-  vectorIcons: object;
-  expo: object;
+  expo?: object;
   value: any;
   navigation: object;
   key: number;
   state?: object;
-  device?: object;
-  me?: object;
   setState?: (state: object) => void;
 };

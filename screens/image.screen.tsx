@@ -8,8 +8,9 @@ import {
   Linking,
   Alert
 } from "react-native";
-import { C } from "../constants";
+import { FontAwesome } from "react-native-vector-icons";
 import SuperImage from "react-native-super-image";
+import { C } from "../constants";
 import Button from "../button.component";
 
 //imageupload stuff
@@ -237,7 +238,6 @@ class ImageScreen extends React.Component {
   async takePicture() {
     const {
       expo,
-      vectorIcons,
       expo: { Permissions }
     } = this.props.navigation.state.params;
 
@@ -248,7 +248,7 @@ class ImageScreen extends React.Component {
       this.props.navigation.navigate({
         routeName: "Camera",
         key: "Camera",
-        params: { withUrl: this.uploadAndReturn, expo, vectorIcons }
+        params: { withUrl: this.uploadAndReturn, expo }
       });
     } else {
       Alert.alert(
@@ -348,10 +348,7 @@ class ImageScreen extends React.Component {
 
   render() {
     const { url } = this.state;
-    const {
-      expo,
-      vectorIcons: { FontAwesome }
-    } = this.props.navigation.state.params;
+    const { expo } = this.props.navigation.state.params;
     const rnActionSheet = (
       <SuperActionSheet
         reference={ref => (this.ActionSheet = ref)}

@@ -21,7 +21,6 @@ export default ({
   mapFieldsToDB,
   field,
   expo,
-  vectorIcons,
   firebaseConfig
 }) => {
   let urlState, urlValue, thumbState, thumbValue;
@@ -84,7 +83,6 @@ export default ({
               params: {
                 url: currentUrl,
                 onChange,
-                vectorIcons,
                 expo,
                 firebaseConfig
               }

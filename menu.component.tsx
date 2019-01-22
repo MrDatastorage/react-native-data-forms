@@ -3,6 +3,7 @@ import React from "react";
 import { Text, View, FlatList } from "react-native";
 
 import Touchable from "react-native-platform-touchable";
+import { FontAwesome } from "react-native-vector-icons";
 
 class Menu extends React.Component {
   constructor(props) {
@@ -30,7 +31,6 @@ class Menu extends React.Component {
     show,
     button
   }) {
-    const { FontAwesome } = this.props.vectorIcons;
     let left;
     if (icon) {
       left = (
@@ -121,7 +121,7 @@ class Menu extends React.Component {
   }
 
   render() {
-    const { data, ListFooterComponent, vectorIcons } = this.props;
+    const { data, ListFooterComponent } = this.props;
 
     return (
       <FlatList

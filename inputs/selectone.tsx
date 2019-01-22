@@ -1,10 +1,9 @@
 import React from "react";
 import { Platform, Picker, Text, View } from "react-native";
 import ModalSelector from "react-native-modal-selector";
+import { FontAwesome } from "react-native-vector-icons";
 
-export default ({ state, field, setState, value, values, vectorIcons }) => {
-  const { FontAwesome } = vectorIcons;
-
+export default ({ state, field, setState, value, values }) => {
   const selectedIndex = state[field] !== null ? state[field] : Number(value);
   const selectedObject =
     values && values.filter(v => v.value === selectedIndex)[0];

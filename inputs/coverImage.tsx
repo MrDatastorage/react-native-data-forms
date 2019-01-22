@@ -6,6 +6,7 @@ import {
   Keyboard
 } from "react-native";
 import SuperImage from "react-native-super-image";
+import { FontAwesome } from "react-native-vector-icons";
 
 const HEIGHT = 200;
 
@@ -21,12 +22,9 @@ export default ({
   navigation,
   mapFieldsToDB,
   field,
-  vectorIcons,
   expo,
   firebaseConfig
 }) => {
-  const { FontAwesome } = vectorIcons;
-
   let urlState, urlValue, thumbState, thumbValue;
   const urlFields: string | string[] = mapFieldsToDB && mapFieldsToDB.url;
   const thumbUrlField = mapFieldsToDB && mapFieldsToDB.thumbUrl;
@@ -86,7 +84,6 @@ export default ({
               params: {
                 url: currentUrl,
                 onChange,
-                vectorIcons,
                 expo,
                 firebaseConfig
               }

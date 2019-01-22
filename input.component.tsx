@@ -66,11 +66,11 @@ class Input extends React.Component<InputProps> {
       errorMessage,
       startSectionDescription,
       info,
-      vectorIcons,
       expo,
       extraInputTypes,
       googlePlacesConfig,
-      firebaseConfig
+      firebaseConfig,
+      extraProps
     } = this.props;
 
     //mainview has title, description, and an input field based on type
@@ -92,24 +92,19 @@ class Input extends React.Component<InputProps> {
       value,
       values,
       clearInput: this.clearInput,
-      vectorIcons,
       expo
     };
 
-    let extraProps = {};
+    let addedProps = {};
 
     if (type === "emailsOrUsers") {
-      extraProps = {
-        me,
-        device,
-        navigation
-      };
+      addedProps = { navigation };
     } else if (type === "location") {
-      extraProps = { navigation, googlePlacesConfig };
+      addedProps = { navigation, googlePlacesConfig };
     } else if (type === "image" || type === "coverImage") {
-      extraProps = { mapFieldsToDB, navigation, firebaseConfig };
+      addedProps = { mapFieldsToDB, navigation, firebaseConfig };
     } else if (type === "dates") {
-      extraProps = { mapFieldsToDB, titles };
+      addedProps = { mapFieldsToDB, titles };
     }
 
     const DEFAULT = TextDefaultInput;
@@ -150,7 +145,9 @@ class Input extends React.Component<InputProps> {
 
       const noRowNeeded = type === "dates" || type === "coverImage";
 
-      const inputField = <InputClass {...inputProps} {...extraProps} />;
+      const inputField = (
+        <InputClass {...inputProps} {...extraProps} {...addedProps} />
+      );
       const maxWidth =
         type === "boolean" ? { width: info ? "60%" : "80%" } : undefined;
 
@@ -173,7 +170,7 @@ class Input extends React.Component<InputProps> {
 
               {inputFieldCorrectWidth}
 
-              {info ? <Info info={info} vectorIcons={vectorIcons} /> : null}
+              {info ? <Info info={info} /> : null}
             </View>
           )}
 

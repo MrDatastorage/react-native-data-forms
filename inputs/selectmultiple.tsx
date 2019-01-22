@@ -1,5 +1,6 @@
 import React from "react";
 import { TouchableOpacity, Text, View } from "react-native";
+import { MaterialIcons } from "react-native-vector-icons";
 import { trim1 } from "../utils";
 
 const objectArrayFromString = (s: string) =>
@@ -11,8 +12,7 @@ const objectArrayFromString = (s: string) =>
         .map((s: string) => ({ label: s, value: s }))
     : [];
 
-export default ({ state, field, setState, value, values, vectorIcons }) => {
-  const { MaterialIcons } = vectorIcons;
+export default ({ state, field, setState, value, values }) => {
   const objectified = objectArrayFromString(value);
   const current = state[field] ? state[field] : objectified;
 

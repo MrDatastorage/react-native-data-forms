@@ -1,5 +1,6 @@
 import React from "react";
 import { View, TextInput, TouchableOpacity, Text } from "react-native";
+import { FontAwesome } from "react-native-vector-icons";
 
 class Dictionary extends React.Component {
   render() {
@@ -9,11 +10,9 @@ class Dictionary extends React.Component {
       setState,
       setUpperState,
       field,
-      clearInput,
-      vectorIcons
+      clearInput
     } = this.props;
     // text
-    const { FontAwesome } = vectorIcons;
 
     const currentValues2 =
       state[field] !== undefined

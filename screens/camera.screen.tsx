@@ -9,6 +9,13 @@ import {
 } from "react-native";
 import GalleryScreen from "./gallery.screen";
 // import isIPhoneX from "react-native-is-iphonex";
+import {
+  Ionicons,
+  MaterialIcons,
+  Foundation,
+  Octicons,
+  MaterialCommunityIcons
+} from "react-native-vector-icons";
 
 const landmarkSize = 2;
 
@@ -279,10 +286,6 @@ export default class CameraScreen extends React.Component {
 
   renderTopBar = () => {
     const { Constants } = this.props.navigation.state.params.expo;
-    const {
-      Ionicons,
-      MaterialIcons
-    } = this.props.navigation.state.params.vectorIcons;
 
     return (
       <View
@@ -343,12 +346,6 @@ export default class CameraScreen extends React.Component {
   };
 
   renderBottomBar = () => {
-    const {
-      Ionicons,
-      Foundation,
-      Octicons
-    } = this.props.navigation.state.params.vectorIcons;
-
     return (
       <View style={styles.bottomBar}>
         <TouchableOpacity
@@ -376,12 +373,6 @@ export default class CameraScreen extends React.Component {
   };
 
   renderMoreOptions = () => {
-    const {
-      Ionicons,
-      MaterialIcons,
-      MaterialCommunityIcons
-    } = this.props.navigation.state.params.vectorIcons;
-
     return (
       <View style={styles.options}>
         <View style={styles.detectors}>

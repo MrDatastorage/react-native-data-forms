@@ -1,5 +1,6 @@
 import React from "react";
 import { Image, StyleSheet, View, TouchableOpacity, Text } from "react-native";
+import { Ionicons } from "react-native-vector-icons";
 
 const pictureSize = 150;
 
@@ -106,7 +107,6 @@ export default class Photo extends React.Component {
 
   render() {
     const { uri } = this.props;
-    const { Ionicons } = this.props.navigation.state.params.vectorIcons;
 
     return (
       <TouchableOpacity
