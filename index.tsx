@@ -85,6 +85,9 @@ class DataForm extends React.Component<DataFormProps, DataFormState> {
               values[field] = stringFromObjectArray(this.state[field]);
               // console.log('selectMultiple: values[field] =', values[field]);
             }
+
+            //should make this always work as long as it's properly defined in the field object
+            //no custom components here.
           } else if (type === "emailsOrUsers") {
             if (field === "EMAILS_AND_USERS") {
               values.emails = this.state[field]
@@ -241,7 +244,6 @@ class DataForm extends React.Component<DataFormProps, DataFormState> {
       fields,
       values,
       expo,
-      screenProps,
       navigation
     } = this.props;
 
@@ -255,8 +257,6 @@ class DataForm extends React.Component<DataFormProps, DataFormState> {
       noScroll,
       expo,
       allCurrentValues,
-      device: screenProps.device,
-      me: screenProps.data.me,
       setState: this.setState,
       state: this.state,
       completeButton,

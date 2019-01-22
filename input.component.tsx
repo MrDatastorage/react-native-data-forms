@@ -45,8 +45,6 @@ class Input extends React.Component<InputProps> {
 
   render() {
     const {
-      me,
-      device,
       navigation,
       setState,
       mapFieldsToDB,
