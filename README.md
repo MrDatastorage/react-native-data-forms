@@ -268,20 +268,25 @@ If anyone using this likes to contribute, please contact me so we can discuss ab
 ## F.A.Q.
 
 **Our codebase is way to complex for something as magical as this, isn't it?**
+
 We strive to make this work for almost anything. You can hide/show fields based on other data, you can validate values and show error messages, and you can add your own custom input type components. There are many props you can additionally add to a field, see [types](./types.tsx)
 
 **What's the advantage of this library if I just use my own components?**
+
 Seperating data-flow from UI/UX, mostly.
 
 **Is this library well maintained?**
+
 Yes, I maintain it ([see my profile](https://karsens.com)) because I use it myself for [Communify](https://communify.cc) and other apps, contact me if you have any questions.
 
 **What's the difference betweeen this and redux-forms?**
+
 Redux forms only works with redux state. This also works with API's, Apollo mutations, and even normal state. Anything.
 
 Besides that, this is a single component in which you can add your own field-types if you need them. This component builds a form based on a fields-object. This fields-object is much much smaller then adding all field-types independently (for example if you use Redux-Forms). See the Example!
 
 **So you support submitting to an API? How?**
+
 The prop `mutate` is a function that based on all filled in values has to return a Promise which fulfills with the result. This can be an API post, a Redux Dispatch, or an Apollo Mutation. The prop `values` should contain all field-values, and can be obtained directly from Apollo Data, from an API fetch, or from a (Redux) state.
 
 ## Hire me
