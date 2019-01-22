@@ -10,9 +10,23 @@ The goal of this function is to seperate semantics from data from implementation
 
 ## Documentation
 
-## Example Use
+## Setup and example
 
-**Step 1:** Create a wrapper of our component:
+### Step 1:
+
+- Install the library: `yarn add react-native-data-forms`
+
+This library has a few peer dependencies you need to have installed in order to use all input types. Feel free no to install the ones of the input types you don't use.
+
+- For most: `yarn add react-native-vector-icons` (Or use @expo/vector-icons)
+- For `date`: `yarn add react-native-date-picker`
+- For `location`: `yarn add react-native-google-places-autocomplete`
+- For `selectOne`: `yarn add react-native-modal-selector`
+- For `image` or `cover-image`: `yarn add react-native-super-image`
+
+### Step 2:
+
+Create a wrapper of our component:
 
 If you want to use our data-types:
 
@@ -72,16 +86,9 @@ const DataForm = props => {
 export { DataForm };
 ```
 
-**Step 2:**
-This library has a few peer dependencies you need to have installed in order to use all input types. Feel free no to install the ones of the input types you don't use.
+### Step 3:
 
-- For most: `yarn add react-native-vector-icons` (Or use @expo/vector-icons)
-- For `date`: `yarn add react-native-date-picker`
-- For `location`: `yarn add react-native-google-places-autocomplete`
-- For `selectOne`: `yarn add react-native-modal-selector`
-- For `image` or `cover-image`: `yarn add react-native-super-image`
-
-**Step 3:** if you need the `location` or `image` type, you need to add the data-forms screens to your navigation stack where you want the image-screen and location-screen to load, like so:
+If you need the `location` or `image` type, you need to add the data-forms screens to your navigation stack where you want the image-screen and location-screen to load, like so:
 
 **react-navigation:**
 
@@ -113,6 +120,8 @@ Object.keys(screens).forEach(key => {
   Navigation.registerComponent(route, () => screen, ...props);
 });
 ```
+
+### Step 4
 
 You're all set up! You can use the component like this: This is an example with all default types, getting data from a GraphQL query, sending it to a GraphQL mutation:
 
