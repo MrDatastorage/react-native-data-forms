@@ -69,6 +69,8 @@ You're all set up! You can use the component like this: This is an example with 
 
 ```js
 import * as React from "react";
+import gql from "graphql-tag";
+import { compose, graphql } from "react-apollo";
 import { DataForm } from "../import";
 import { Field } from "react-native-data-forms/types";
 import { Alert } from "react-native";
@@ -80,47 +82,13 @@ class Example extends React.Component {
     const defaultComplete = () => Alert.alert("Saved");
 
     const fields: Field[] = [
-      {
-        field: "coverImage",
-        type: "coverImage"
-      },
-
-      {
-        field: "image",
-        type: "image",
-        title: "Pick an image"
-      },
-
-      {
-        field: "text",
-        title: "Text"
-        //default type is a text input
-      },
-
-      {
-        field: "textArea",
-        title: "Text Area",
-        type: "textArea"
-      },
-
-      {
-        field: "numbers",
-        title: "Fill in Numbers here",
-        type: "numbers"
-      },
-
-      {
-        field: "phone",
-        title: "Phone number",
-        type: "phone"
-      },
-
-      {
-        field: "date",
-        title: "Date",
-        type: "date"
-      },
-
+      { field: "coverImage", type: "coverImage" },
+      { field: "image", type: "image", title: "Pick an image" },
+      { field: "text", title: "Text" }, //default type is a text input
+      { field: "textArea", title: "Text Area", type: "textArea" },
+      { field: "numbers", title: "Fill in Numbers here", type: "numbers" },
+      { field: "phone", title: "Phone number", type: "phone" },
+      { field: "date", title: "Date", type: "date" },
       {
         field: "STARTEND",
         titles: {
@@ -142,11 +110,7 @@ class Example extends React.Component {
         type: "color"
       },
 
-      {
-        field: "boolean",
-        title: "Yes or no?",
-        type: "boolean"
-      },
+      { field: "boolean", title: "Boolean type", type: "boolean" },
 
       {
         startSection: true,
@@ -187,11 +151,7 @@ class Example extends React.Component {
         type: "categories"
       },
 
-      {
-        field: "dictionary",
-        title: "Dictionary",
-        type: "dictionary"
-      }
+      { field: "dictionary", title: "Dictionary", type: "dictionary" }
     ];
 
     return (
