@@ -186,8 +186,10 @@ export type InputProps = Field & {
   allCurrentValues: object;
   expo?: object;
   value: any;
-  navigation: object;
+  navigation?: object;
   key: number;
   state?: object;
+  firebaseConfig?: Firebase;
+  googlePlacesConfig?: GooglePlaces;
   setState?: (state: object) => void;
 };

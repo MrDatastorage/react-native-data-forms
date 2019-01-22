@@ -1,5 +1,14 @@
 import React from "react";
-import { Keyboard } from "react-native";
+
+import {
+  Text,
+  ActivityIndicator,
+  Platform,
+  ScrollView,
+  KeyboardAvoidingView,
+  View,
+  Keyboard
+} from "react-native";
 
 import { Value, DataFormProps } from "./types";
 import { uniq } from "./utils";
@@ -8,7 +17,9 @@ import ImageScreen from "./screens/image.screen";
 import CameraScreen from "./screens/camera.screen";
 import LocationScreen from "./screens/location.screen";
 
-import Form from "./form.component";
+import { C } from "./constants";
+import Button from "./button.component";
+import Input from "./input.component";
 
 export const screens = {
   Location: {
@@ -169,16 +180,112 @@ class DataForm extends React.Component<DataFormProps, DataFormState> {
     );
   }
 
-  render() {
-    const props = {
-      ...this.props,
-      allCurrentValues: this.getAllCurrentValues(),
-      setState: this.setState,
-      state: this.state,
-      saveValues: this.saveValues
-    };
+  getValue(field, values) {
+    let value;
 
-    return <Form {...props} />;
+    if (field.mapFieldsToDB) {
+      const dbKeys = Object.values(field.mapFieldsToDB);
+      value = dbKeys.reduce((all, current) => {
+        const key = Array.isArray(current) ? current[0] : current;
+        return { ...all, [key]: values[key] };
+      }, {});
+    } else {
+      value = values[field.field];
+    }
+
+    return value;
+  }
+
+  renderSaveButton() {
+    const { completeButtonBackground } = this.props;
+
+    const completeButton = this.props.completeButton
+      ? this.props.completeButton
+      : "Save";
+
+    return (
+      <View
+        style={{
+          height: 50,
+          alignItems: "flex-end",
+          justifyContent: "center",
+          paddingRight: 20,
+          backgroundColor: completeButtonBackground
+            ? completeButtonBackground
+            : "#ecf0f1"
+        }}
+      >
+        {this.state.loading ? (
+          <View style={{ marginLeft: 50 }}>
+            <ActivityIndicator />
+          </View>
+        ) : (
+          <Button title={completeButton} onPress={() => this.saveValues()} />
+        )}
+      </View>
+    );
+  }
+
+  render() {
+    const {
+      navigation,
+      fields,
+      values,
+      noScroll,
+      expo,
+      extraInputTypes,
+      firebaseConfig,
+      googlePlacesConfig
+    } = this.props;
+
+    const allFields = fields.map((field, index) => {
+      const value = this.getValue(field, values);
+
+      return value !== undefined ? (
+        <Input
+          {...field}
+          allCurrentValues={this.getAllCurrentValues()}
+          value={value}
+          key={`index-${index}`}
+          state={this.state}
+          setState={newState => this.setState(newState)}
+          //all props below are about config / navigating
+          extraInputTypes={extraInputTypes}
+          expo={expo}
+          navigation={navigation}
+          firebaseConfig={firebaseConfig}
+          googlePlacesConfig={googlePlacesConfig}
+        />
+      ) : (
+        <Text key={index}>{field.field} not found in data</Text>
+      );
+    });
+
+    return noScroll ? (
+      <View>
+        {allFields}
+        {this.renderSaveButton()}
+      </View>
+    ) : (
+      <KeyboardAvoidingView
+        style={{
+          height: "100%",
+          backgroundColor: "#DDD"
+        }}
+        behavior="padding"
+        keyboardVerticalOffset={Platform.OS === "ios" ? 20 : 75}
+      >
+        <ScrollView
+          keyboardShouldPersistTaps={"handled"}
+          style={{
+            backgroundColor: C.BG_COLOR
+          }}
+        >
+          {allFields}
+        </ScrollView>
+        {this.renderSaveButton()}
+      </KeyboardAvoidingView>
+    );
   }
 }
 
