@@ -10,7 +10,7 @@ The goal of this function is to seperate semantics from data from implementation
 
 ## Documentation
 
-## Setup and example
+## Setup
 
 ### Step 1:
 
@@ -22,7 +22,7 @@ This library has a few peer dependencies you need to have installed in order to 
 - For `date`: `yarn add react-native-date-picker`
 - For `location`: `yarn add react-native-google-places-autocomplete`
 - For `selectOne`: `yarn add react-native-modal-selector`
-- For `image` or `cover-image`: `yarn add react-native-super-image`
+- For `image` or `coverImage`: `yarn add react-native-super-image` and expo is required!
 
 ### Step 2:
 
@@ -32,6 +32,8 @@ If you want to use our data-types:
 
 ```js
 import * as React from "react";
+
+//Expo is only required for image and imageCover at the moment
 import expo from "expo";
 
 import _DataForm from "react-native-data-forms";
@@ -121,7 +123,7 @@ Object.keys(screens).forEach(key => {
 });
 ```
 
-### Step 4
+## Example
 
 You're all set up! You can use the component like this: This is an example with all default types, getting data from a GraphQL query, sending it to a GraphQL mutation:
 
@@ -304,14 +306,9 @@ In the future, I'm planning to add these features to the codebase.
 - Single Sign On with Google, Facebook, LinkedIn...
 - Passwords
 - Style properties
-- Selecting and uploading multiple images/videos, 1 by 1
+- Selecting and uploading multiple images/videos, picking multiple, uploading 1 by 1
 - File upload
 - Step-by-step form functionality that walks through all inputs one by one, navigating to the next input using a stack navigator. This can be achieved by adding a walkThrough bool prop and a function getScreens that returns all Forms seperately in screens-objects which can be added to your stack-navigator dynamically.
-
-If you want, you can create PR's for this:
-
-- Wix navigation support
-- bare react-native support
 
 If anyone using this likes to contribute, please contact me so we can discuss about the way to implement things. [Here](https://karsens.com) you can find a contact button.
 
