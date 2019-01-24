@@ -91,7 +91,9 @@ class Input extends React.Component<InputProps> {
 
     // when to use setState and when to use this.setState?
 
-    const InputClass = type ? inputTypes[type] : DEFAULT;
+    const InputClass = type
+      ? inputTypes[type]
+      : inputTypes[Object.keys(inputTypes)[0]];
 
     if (InputClass && !isHidden) {
       const noTitleNeeded =
