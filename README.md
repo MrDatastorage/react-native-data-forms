@@ -15,14 +15,7 @@ The goal of this function is to seperate semantics from data from implementation
 ### Step 1:
 
 - Install the library: `yarn add react-native-data-forms`
-
-This library has a few peer dependencies you need to have installed in order to use all input types. Feel free no to install the ones of the input types you don't use.
-
-- For most: `yarn add react-native-vector-icons` (Or use @expo/vector-icons)
-- For `date`: `yarn add react-native-date-picker`
-- For `location`: `yarn add react-native-google-places-autocomplete`
-- For `selectOne`: `yarn add react-native-modal-selector`
-- For `image` or `coverImage`: `yarn add react-native-super-image` and expo is required!
+- Install the input types library if you wish to use ours: `yarn add leckr-inputs`
 
 ### Step 2:
 
@@ -37,6 +30,7 @@ import * as React from "react";
 import expo from "expo";
 
 import _DataForm from "react-native-data-forms";
+import { inputs } from "leckr-inputs";
 
 // Optional: import extra input types, for example an emailsOrUsersInput type you created yourself that takes a text and suggests an email or users from your userbase.
 import emailsOrUsers from "./fat/emailsOrUsersInput";
@@ -63,7 +57,7 @@ const DataForm = props => {
     expo,
     firebaseConfig,
     googlePlacesConfig,
-    extraInputTypes: { emailsOrUsers }
+    inputTypes: { ...inputs, emailsOrUsers }
   };
   return <_DataForm {...allProps} />;
 };
@@ -81,7 +75,7 @@ import _DataForm from "react-native-data-forms";
 import emailsOrUsers from "./fat/emailsOrUsersInput";
 
 const DataForm = props => {
-  return <_DataForm {...props} extraInputTypes={{ emailsOrUsers }} />;
+  return <_DataForm {...props} inputTypes={{ emailsOrUsers }} />;
 };
 export { DataForm };
 ```
@@ -93,7 +87,7 @@ If you need the `location` or `image` type, you need to add the data-forms scree
 **react-navigation:**
 
 ```js
-import { screens } from "react-native-data-forms";
+import { screens } from "leckr-inputs";
 
 const Stack = createStackNavigator({
   root: { screen: HomeScreen },
@@ -105,7 +99,7 @@ const Stack = createStackNavigator({
 
 ```js
 import { Navigation } from "react-native-navigation";
-import { screens } from "react-native-data-forms";
+import { screens } from "leckr-inputs";
 
 Object.keys(screens).forEach(key => {
   const { screen, navigationOptions } = screens[key];

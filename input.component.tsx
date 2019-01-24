@@ -2,22 +2,6 @@ import React from "react";
 
 import { Text, View, Platform, StyleSheet } from "react-native";
 
-import DatePicker from "./inputs/datepicker";
-import Dates from "./inputs/dates";
-import TextArea from "./inputs/textarea";
-import Color from "./inputs/color";
-import BooleanInput from "./inputs/boolean";
-import SelectOne from "./inputs/selectone";
-import SelectMultiple from "./inputs/selectmultiple";
-import Categories from "./inputs/categories";
-import Dictionary from "./inputs/dictionary";
-import LocationInput from "./inputs/location";
-import ImageInput from "./inputs/image";
-import CoverImageInput from "./inputs/coverImage";
-import TextDefaultInput from "./inputs/text";
-import Numbers from "./inputs/numbers";
-import Phone from "./inputs/phone";
-
 import { InputProps } from "./types";
 import Info from "./info.component";
 
@@ -64,11 +48,13 @@ class Input extends React.Component<InputProps> {
       errorMessage,
       startSectionDescription,
       info,
+      inputTypes,
+      extraProps,
+
+      //should go away
       expo,
-      extraInputTypes,
       googlePlacesConfig,
-      firebaseConfig,
-      extraProps
+      firebaseConfig
     } = this.props;
 
     //mainview has title, description, and an input field based on type
@@ -103,30 +89,9 @@ class Input extends React.Component<InputProps> {
       addedProps = { mapFieldsToDB, titles };
     }
 
-    const DEFAULT = TextDefaultInput;
-
     // when to use setState and when to use this.setState?
-    const inputFields = {
-      textArea: TextArea,
-      date: DatePicker,
-      dates: Dates,
-      color: Color,
-      boolean: BooleanInput,
-      selectOne: SelectOne,
-      selectMultiple: SelectMultiple,
-      categories: Categories,
-      dictionary: Dictionary,
-      location: LocationInput,
-      image: ImageInput,
-      coverImage: CoverImageInput,
-      numbers: Numbers,
-      phone: Phone,
-      text: DEFAULT,
-      textInput: DEFAULT,
-      ...extraInputTypes
-    };
 
-    const InputClass = type ? inputFields[type] : DEFAULT;
+    const InputClass = type ? inputTypes[type] : DEFAULT;
 
     if (InputClass && !isHidden) {
       const noTitleNeeded =

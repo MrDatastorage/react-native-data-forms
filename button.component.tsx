@@ -1,5 +1,5 @@
-import { Button as RNButton, Platform, View, Text } from "react-native";
 import React from "react";
+import { Button as RNButton, Platform, View, Text } from "react-native";
 import { C } from "./constants";
 import Touchable from "react-native-platform-touchable";
 

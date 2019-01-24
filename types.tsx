@@ -139,7 +139,7 @@ export type DataFormProps = {
   /**
    * Object where keys are inputtype names, and values are React.Node that's the Input component
    */
-  extraInputTypes?: Object;
+  inputTypes?: Object;
 
   /**
    * If true, the form doesn't use a scrollview with flex of 1

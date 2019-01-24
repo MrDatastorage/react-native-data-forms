@@ -13,28 +13,10 @@ import {
 import { Value, DataFormProps } from "./types";
 import { uniq } from "./utils";
 
-import ImageScreen from "./screens/image.screen";
-import CameraScreen from "./screens/camera.screen";
-import LocationScreen from "./screens/location.screen";
-
 import { C } from "./constants";
 import Button from "./button.component";
+
 import Input from "./input.component";
-
-export const screens = {
-  Location: {
-    screen: LocationScreen
-  },
-
-  Image: {
-    screen: ImageScreen
-  },
-
-  Camera: {
-    screen: CameraScreen,
-    navigationOptions: { header: null }
-  }
-};
 
 const stringFromObjectArray = (a: Value[]) =>
   a ? a.map((v: Value) => `[${v.value}]`).join(",") : "";
@@ -227,9 +209,9 @@ class DataForm extends React.Component<DataFormProps, DataFormState> {
       fields,
       values,
       noScroll,
-      //config things v
+      inputTypes,
+      //config things (should be inside inputTypypes already, data-forms isn't responsible)
       expo,
-      extraInputTypes,
       firebaseConfig,
       googlePlacesConfig,
       navigation
@@ -247,7 +229,7 @@ class DataForm extends React.Component<DataFormProps, DataFormState> {
           state={this.state}
           setState={newState => this.setState(newState)}
           //all props below are about config / navigating
-          extraInputTypes={extraInputTypes}
+          inputTypes={inputTypes}
           expo={expo}
           navigation={navigation}
           firebaseConfig={firebaseConfig}
