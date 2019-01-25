@@ -30,7 +30,7 @@ class DataForm extends React.Component<DataFormProps, DataFormState> {
     });
   }
 
-  renderInput = ({ field, value }) => {
+  renderInput = ({ field, value, key }) => {
     const { inputTypes, FieldComponent } = this.props;
 
     const isHidden = !!(
@@ -40,7 +40,7 @@ class DataForm extends React.Component<DataFormProps, DataFormState> {
     const inputProps = {
       state: this.state,
       setFormState: newState => this.setState(newState),
-
+      key,
       value,
 
       mapFieldsToDB: field.mapFieldsToDB,
