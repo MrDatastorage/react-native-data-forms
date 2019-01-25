@@ -56,7 +56,11 @@ class DataForm extends React.Component<DataFormProps, DataFormState> {
 
     if (InputClass && !isHidden) {
       const inputField = <InputClass {...inputProps} />;
-      return FieldComponent({ inputField, inputProps: { ...field } });
+      return FieldComponent({
+        inputField,
+        inputProps: { ...field },
+        state: this.state
+      });
     }
 
     return null;
