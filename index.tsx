@@ -80,13 +80,13 @@ class DataForm extends React.Component<DataFormProps, DataFormState> {
           Object.keys(mapFieldsToDB).forEach(f => {
             const dbKey = mapFieldsToDB[f];
 
-            if (this.state[f] !== null && this.state[f] !== undefined) {
+            if (this.state[dbKey] !== null && this.state[dbKey] !== undefined) {
               if (Array.isArray(dbKey)) {
                 dbKey.forEach(oneKey => {
-                  values[oneKey] = this.state[f];
+                  values[oneKey] = this.state[dbKey];
                 });
               } else {
-                values[dbKey] = this.state[f];
+                values[dbKey] = this.state[dbKey];
               }
             }
           });
