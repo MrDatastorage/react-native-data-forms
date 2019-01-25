@@ -24,65 +24,83 @@ Create a wrapper of our component:
 If you want to use our data-types:
 
 ```js
-import * as React from "react";
-
-//Expo is only required for image and imageCover at the moment
+import React from "react";
 import expo from "expo";
 
+import { inputs, FieldComponent } from "leckr-inputs";
 import _DataForm from "react-native-data-forms";
-import { inputs } from "leckr-inputs";
 
-// Optional: import extra input types, for example an emailsOrUsersInput type you created yourself that takes a text and suggests an email or users from your userbase.
-import emailsOrUsers from "./fat/emailsOrUsersInput";
+//optionally, import your own inputs
+import emailsOrUsers from "../fat/emailsOrUsersInput";
 
-// Optional: if you want to use image upload (image and coverImage), give a firebase Config here.
+//this is needed for image upload
 const firebaseConfig = {
-  apiKey: "?????",
-  authDomain: "?????",
-  databaseURL: "?????",
-  projectId: "??????",
-  storageBucket: "?????",
-  messagingSenderId: "?????"
+  apiKey: "?",
+  authDomain: "?",
+  databaseURL: "?",
+  projectId: "?",
+  storageBucket: "?",
+  messagingSenderId: "?"
 };
 
-// Optional: if you want to use the location input type, we need a google places key.
+//this is needed for the location type
 const googlePlacesConfig = {
-  key: "?????"
+  key: "?"
 };
 
-// Create and export DataForms with default props installed.
 const DataForm = props => {
-  const allProps = {
-    ...props,
-    expo,
+  //initialize our input types with the props they need
+  const leckrInputs = inputs({
     firebaseConfig,
     googlePlacesConfig,
-    inputTypes: { ...inputs, emailsOrUsers }
+    expo,
+    navigation: props.navigation
+  });
+
+  const inputTypes = {
+    ...leckrInputs,
+    //add your own custom types
+    emailsOrUsers
   };
+
+  const allProps = {
+    ...props,
+    inputTypes,
+    FieldComponent
+  };
+
   return <_DataForm {...allProps} />;
 };
 
-export { DataForm };
+export default DataForm;
 ```
 
 If you will import your own data-types and don't use ours:
 
 ```js
-import * as React from "react";
+import React from "react";
+
+//import your own inputs and fieldcomponent.
+import { inputs, FieldComponent } from "????";
+
 import _DataForm from "react-native-data-forms";
 
-// Import extra input types
-import emailsOrUsers from "./fat/emailsOrUsersInput";
-
 const DataForm = props => {
-  return <_DataForm {...props} inputTypes={{ emailsOrUsers }} />;
+  const allProps = {
+    ...props,
+    inputTypes: inputs,
+    FieldComponent
+  };
+
+  return <_DataForm {...allProps} />;
 };
-export { DataForm };
+
+export default DataForm;
 ```
 
 ### Step 3:
 
-If you need the `location` or `image` type, you need to add the data-forms screens to your navigation stack where you want the image-screen and location-screen to load, like so:
+If you need the `location` or `image` type from leckr-inputs, you need to add the leckr-inputs screens to your navigation stack where you want the image-screen and location-screen to load, like so:
 
 **react-navigation:**
 
@@ -129,7 +147,7 @@ import { Alert } from "react-native";
 
 class Example extends React.Component {
   render() {
-    const { data, mutate } = this.props;
+    const { data, mutate, navigation } = this.props;
 
     const defaultComplete = () => Alert.alert("Saved");
 
@@ -208,7 +226,7 @@ class Example extends React.Component {
 
     return (
       <DataForm
-        {...this.props}
+        navigation={navigation}
         fields={fields}
         onComplete={defaultComplete}
         mutate={vars => mutate(vars)}

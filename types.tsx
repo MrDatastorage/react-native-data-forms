@@ -77,7 +77,7 @@ export type Field = {
   hidden?: (allCurrentValues: object) => boolean;
 
   /**
-   * add extra props to the specific field you want to pass to the input
+   * add extra props to the specific field you want to pass to the input. you could also pass props just as properties of the main object, but this is the neater way.
    */
   passProps?: object;
 };
@@ -119,7 +119,7 @@ export type DataFormProps = {
   inputTypes: Object;
 
   /**
-   * FieldComponent
+   * FieldComponent: builds the field around the inputtype, for example adding a title, description, info, and a new section.
    */
   FieldComponent: React.Node;
 
