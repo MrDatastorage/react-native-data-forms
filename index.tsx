@@ -40,7 +40,6 @@ class DataForm extends React.Component<DataFormProps, DataFormState> {
     const inputProps = {
       state: this.state,
       setFormState: newState => this.setState(newState),
-      key,
       value,
       ...field
     };
@@ -54,7 +53,8 @@ class DataForm extends React.Component<DataFormProps, DataFormState> {
       return FieldComponent({
         inputField,
         inputProps: { ...field },
-        state: this.state
+        state: this.state,
+        key
       });
     }
 
