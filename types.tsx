@@ -75,19 +75,11 @@ export type Field = {
    * hide the input field based on all current values
    */
   hidden?: (allCurrentValues: object) => boolean;
-};
 
-type Firebase = {
-  apiKey: string;
-  authDomain: string;
-  databaseURL: string;
-  projectId: string;
-  storageBucket: string;
-  messagingSenderId: string;
-};
-
-type GooglePlaces = {
-  key: string;
+  /**
+   * add extra props to the specific field you want to pass to the input
+   */
+  passProps?: object;
 };
 
 export type DataFormProps = {
@@ -100,21 +92,6 @@ export type DataFormProps = {
    * Values object. keys should be the same as field.field prop.
    */
   values: Object;
-
-  /**
-   * expo object
-   */
-  expo?: Object;
-
-  /**
-   * config for image inputs
-   */
-  firebaseConfig?: Firebase;
-
-  /**
-   * config for location input
-   */
-  googlePlacesConfig?: GooglePlaces;
 
   /**
    * Title of complete button
@@ -139,7 +116,12 @@ export type DataFormProps = {
   /**
    * Object where keys are inputtype names, and values are React.Node that's the Input component
    */
-  inputTypes?: Object;
+  inputTypes: Object;
+
+  /**
+   * FieldComponent
+   */
+  FieldComponent: React.Node;
 
   /**
    * If true, the form doesn't use a scrollview with flex of 1
@@ -165,31 +147,9 @@ export type DataFormProps = {
    * if true, form sets values to undefined once completed
    */
   clearOnComplete?: boolean;
-
-  /**
-   * your navigation screenProps
-   */
-  screenProps: any;
-
-  /**
-   * your react-navigation prop
-   */
-  navigation: any;
 };
 
 export type Value = {
   label: string;
   value: string | number;
-};
-
-export type InputProps = Field & {
-  allCurrentValues: object;
-  expo?: object;
-  value: any;
-  navigation?: object;
-  key: number;
-  state?: object;
-  firebaseConfig?: Firebase;
-  googlePlacesConfig?: GooglePlaces;
-  setState?: (state: object) => void;
 };

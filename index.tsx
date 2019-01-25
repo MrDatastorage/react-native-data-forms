@@ -10,16 +10,11 @@ import {
   Keyboard
 } from "react-native";
 
-import { Value, DataFormProps } from "./types";
+import { DataFormProps } from "./types";
 import { uniq } from "./utils";
 
 import { C } from "./constants";
 import Button from "./button.component";
-
-import Input from "./input.component";
-
-const stringFromObjectArray = (a: Value[]) =>
-  a ? a.map((v: Value) => `[${v.value}]`).join(",") : "";
 
 type DataFormState = any;
 
@@ -27,36 +22,48 @@ class DataForm extends React.Component<DataFormProps, DataFormState> {
   constructor(props: DataFormProps) {
     super(props);
     this.saveValues = this.saveValues.bind(this); //to give props
-
     console.log("Go through constructor");
-
     this.state = { loading: false };
-
     props.fields.forEach(field => {
-      if (field.type === "textArea") {
-        //TODO: for every textArea field, create a state like this.
-        this.state[field.field] = "";
-        this.state[`${field.field}currentPosition`] = [0, 0];
-        this.state[`${field.field}selection`] = null;
-        this.state[`${field.field}allowEditing`] = true;
-      } else if (field.type === "categories") {
-        this.state[field.field + "New"] = "";
-      } else if (field.type === "dictionary") {
-        this.state[field.field + "Symbol"] = "";
-        this.state[field.field + "Meaning"] = "";
-      } else if (field.type === "date") {
-        this.state[field.field] = props.values[field.field];
-      } else {
-        this.state[field.field] = null;
-      }
-      // this.state[field.field] = props.values[field.field];
+      this.state[field.field] = null;
+      //actually, this should also initialize all mapFieldsToDB properties, right?
     });
   }
 
+  renderInput = ({ field, value }) => {
+    const { inputTypes, FieldComponent } = this.props;
+
+    const isHidden = !!(
+      field.hidden && field.hidden(this.getAllCurrentValues())
+    );
+
+    const inputProps = {
+      state: this.state,
+      setFormState: newState => this.setState(newState),
+
+      value,
+
+      mapFieldsToDB: field.mapFieldsToDB,
+      onChange: field.onChange,
+      title: field.title,
+      values: field.values,
+      ...field.passProps
+    };
+
+    const InputClass = field.type
+      ? inputTypes[field.type]
+      : inputTypes[Object.keys(inputTypes)[0]];
+
+    if (InputClass && !isHidden) {
+      const inputField = <InputClass {...inputProps} />;
+      return FieldComponent({ inputField, inputProps: { ...field } });
+    }
+
+    return null;
+  };
+
   saveValues = () => {
     const { fields, onComplete, submitAll } = this.props;
-
-    // TODO: All custom state differences should be ported inside input type components itself, instead of here.....
 
     let values = submitAll ? this.getAllCurrentValues() : {};
 
@@ -65,58 +72,44 @@ class DataForm extends React.Component<DataFormProps, DataFormState> {
 
       let error = false;
 
-      fields.forEach(
-        ({ field, type, mapFieldsToDB, validate, errorMessage }) => {
-          if (type === "textArea") {
-            if (this.state[field] !== "") {
-              values[field] = this.state[field];
-            }
-          } else if (type === "selectMultiple") {
-            if (this.state[field] !== null) {
-              values[field] = stringFromObjectArray(this.state[field]);
-              // console.log('selectMultiple: values[field] =', values[field]);
-            }
-          } else {
-            if (mapFieldsToDB) {
-              //if mapFieldsToDB is used, the field value itself is unimportant and probably unused
-              values[field] = undefined;
+      fields.forEach(({ field, mapFieldsToDB, validate, errorMessage }) => {
+        if (mapFieldsToDB) {
+          //if mapFieldsToDB is used, the field value itself is unimportant and probably unused
+          values[field] = undefined;
 
-              Object.keys(mapFieldsToDB).forEach(f => {
-                const dbKey = mapFieldsToDB[f];
+          Object.keys(mapFieldsToDB).forEach(f => {
+            const dbKey = mapFieldsToDB[f];
 
-                if (this.state[f] !== null && this.state[f] !== undefined) {
-                  if (Array.isArray(dbKey)) {
-                    dbKey.forEach(oneKey => {
-                      values[oneKey] = this.state[f];
-                    });
-                  } else {
-                    values[dbKey] = this.state[f];
-                  }
-                }
-              });
-            } else {
-              if (
-                this.state[field] !== null &&
-                this.state[field] !== undefined
-              ) {
-                values[field] = this.state[field];
+            if (this.state[f] !== null && this.state[f] !== undefined) {
+              if (Array.isArray(dbKey)) {
+                dbKey.forEach(oneKey => {
+                  values[oneKey] = this.state[f];
+                });
+              } else {
+                values[dbKey] = this.state[f];
               }
             }
-          }
-
-          if (validate && validate(this.state[field]) !== true) {
-            error = true;
-            console.log("ERROR");
-            this.state[field + "Error"] = errorMessage;
+          });
+        } else {
+          if (this.state[field] !== null && this.state[field] !== undefined) {
+            values[field] = this.state[field];
           }
         }
-      );
+
+        if (validate && validate(this.state[field]) !== true) {
+          error = true;
+          console.log("ERROR");
+          this.state[field + "Error"] = errorMessage;
+        }
+      });
 
       if (!error) {
         console.log("values are now", values);
         this.props
           .mutate(values)
           .then(({ data }) => {
+            //for api, state, dispatch support etc, the result should be taken based on mutationtype or so.
+
             this.setState({ loading: false }, () => {
               onComplete && onComplete(data, values);
               if (this.props.clearOnComplete) {
@@ -205,36 +198,13 @@ class DataForm extends React.Component<DataFormProps, DataFormState> {
   }
 
   render() {
-    const {
-      fields,
-      values,
-      noScroll,
-      inputTypes,
-      //config things (should be inside inputTypypes already, data-forms isn't responsible)
-      expo,
-      firebaseConfig,
-      googlePlacesConfig,
-      navigation
-    } = this.props;
+    const { fields, values, noScroll } = this.props;
 
     const allFields = fields.map((field, index) => {
       const value = this.getValue(field, values);
 
       return value !== undefined ? (
-        <Input
-          {...field}
-          allCurrentValues={this.getAllCurrentValues()}
-          value={value}
-          key={`index-${index}`}
-          state={this.state}
-          setState={newState => this.setState(newState)}
-          //all props below are about config / navigating
-          inputTypes={inputTypes}
-          expo={expo}
-          navigation={navigation}
-          firebaseConfig={firebaseConfig}
-          googlePlacesConfig={googlePlacesConfig}
-        />
+        this.renderInput({ field, value, key: `field-${index}` })
       ) : (
         <Text key={index}>{field.field} not found in data</Text>
       );
