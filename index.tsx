@@ -42,12 +42,7 @@ class DataForm extends React.Component<DataFormProps, DataFormState> {
       setFormState: newState => this.setState(newState),
       key,
       value,
-
-      mapFieldsToDB: field.mapFieldsToDB,
-      onChange: field.onChange,
-      title: field.title,
-      values: field.values,
-      ...field.passProps
+      ...field
     };
 
     const InputClass = field.type
