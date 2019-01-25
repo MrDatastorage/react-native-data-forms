@@ -63,6 +63,7 @@ class DataForm extends React.Component<DataFormProps, DataFormState> {
       });
     }
 
+    console.log("inputclass && !ishidden is apparently false", isHidden);
     return null;
   };
 
