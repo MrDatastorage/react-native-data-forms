@@ -22,12 +22,13 @@ class DataForm extends React.Component<DataFormProps, DataFormState> {
   constructor(props: DataFormProps) {
     super(props);
     this.saveValues = this.saveValues.bind(this); //to give props
-    console.log("Go through constructor");
+
     this.state = { loading: false };
-    props.fields.forEach(field => {
-      this.state[field.field] = null;
-      //actually, this should also initialize all mapFieldsToDB properties, right?
-    });
+    // probably works without this
+    // props.fields.forEach(field => {
+    //   this.state[field.field] = null;
+    //   //actually, this should also initialize all mapFieldsToDB properties, right?
+    // });
   }
 
   renderInput = ({ field, value, key }) => {
@@ -58,82 +59,27 @@ class DataForm extends React.Component<DataFormProps, DataFormState> {
       });
     }
 
-    console.log("inputclass && !ishidden is apparently false", isHidden);
     return null;
   };
 
-  saveValues = () => {
-    const { fields, onComplete, submitAll } = this.props;
+  clearState = () => {
+    const { fields } = this.props;
+    const allFields = fields.reduce(
+      (result, f) => ({ ...result, [f.field]: undefined }),
+      {}
+    );
 
-    let values = submitAll ? this.getAllCurrentValues() : {};
-
-    this.setState({ loading: true }, () => {
-      Keyboard.dismiss(); //Hermes (@Dojo) reported a keyboard will stay open after pressing save and going to the next screen (sometimes). This should solve that.
-
-      let error = false;
-
-      fields.forEach(({ field, mapFieldsToDB, validate, errorMessage }) => {
-        if (mapFieldsToDB) {
-          //if mapFieldsToDB is used, the field value itself is unimportant and probably unused
-          values[field] = undefined;
-
-          Object.keys(mapFieldsToDB).forEach(f => {
-            const dbKey = mapFieldsToDB[f];
-
-            if (this.state[dbKey] !== null && this.state[dbKey] !== undefined) {
-              if (Array.isArray(dbKey)) {
-                dbKey.forEach(oneKey => {
-                  values[oneKey] = this.state[dbKey];
-                });
-              } else {
-                values[dbKey] = this.state[dbKey];
-              }
-            }
-          });
-        } else {
-          if (this.state[field] !== null && this.state[field] !== undefined) {
-            values[field] = this.state[field];
-          }
-        }
-
-        if (validate && validate(this.state[field]) !== true) {
-          error = true;
-          console.log("ERROR");
-          this.state[field + "Error"] = errorMessage;
-        }
-      });
-
-      if (!error) {
-        console.log("values are now", values);
-        this.props
-          .mutate(values)
-          .then(({ data }) => {
-            //for api, state, dispatch support etc, the result should be taken based on mutationtype or so.
-
-            this.setState({ loading: false }, () => {
-              onComplete && onComplete(data, values);
-              if (this.props.clearOnComplete) {
-                const allFields = fields.reduce(
-                  (result, f) => ({ ...result, [f.field]: undefined }),
-                  {}
-                );
-                this.setState(allFields);
-              }
-            });
-          })
-          .catch(e => console.log("ERROR", e));
-      } else {
-        this.setState({ loading: false });
-      }
-    });
+    this.setState(allFields);
   };
 
   getAllCurrentValues() {
     const { fields, values } = this.props;
 
-    const valueKeys = fields.map(field => field.field);
-    const valueKeys2 = Object.keys(values);
-    const reallyAllValueKeys = uniq(valueKeys.concat(valueKeys2));
+    const valueKeysFromFields = fields.map(field => field.field);
+    const valueKeysFromValues = Object.keys(values);
+    const reallyAllValueKeys = uniq(
+      valueKeysFromFields.concat(valueKeysFromValues)
+    );
 
     return (
       values &&
@@ -150,6 +96,74 @@ class DataForm extends React.Component<DataFormProps, DataFormState> {
         .reduce((all, current) => ({ ...all, ...current }), {})
     );
   }
+
+  validateValues = () => {
+    const { fields, submitAll } = this.props;
+
+    let values = submitAll ? this.getAllCurrentValues() : {};
+
+    let error = false;
+
+    fields.forEach(({ field, mapFieldsToDB, validate, errorMessage }) => {
+      if (mapFieldsToDB) {
+        //if mapFieldsToDB is used, the field value itself is unimportant and probably unused
+        values[field] = undefined;
+
+        Object.keys(mapFieldsToDB).forEach(f => {
+          const dbKey = mapFieldsToDB[f];
+
+          if (this.state[dbKey] !== null && this.state[dbKey] !== undefined) {
+            if (Array.isArray(dbKey)) {
+              dbKey.forEach(oneKey => {
+                values[oneKey] = this.state[dbKey];
+              });
+            } else {
+              values[dbKey] = this.state[dbKey];
+            }
+          }
+        });
+      } else {
+        if (this.state[field] !== null && this.state[field] !== undefined) {
+          values[field] = this.state[field];
+        }
+      }
+
+      if (validate && validate(this.state[field]) !== true) {
+        error = true;
+        this.setState({ [field + "Error"]: errorMessage });
+      }
+    });
+
+    return { values, error };
+  };
+
+  saveValues = () => {
+    const { onComplete } = this.props;
+
+    this.setState({ loading: true }, () => {
+      Keyboard.dismiss(); // Hermes (@Dojo) reported a keyboard will stay open after pressing save and going to the next screen (sometimes). This should solve that.
+
+      const { values, error } = this.validateValues();
+
+      if (error) {
+        this.setState({ loading: false });
+      } else {
+        console.log("No error with values: ", values);
+
+        this.props
+          .mutate(values)
+          .then(({ data }) => {
+            //for api, state, dispatch support etc, the result should be taken based on mutationtype or so.
+
+            this.setState({ loading: false }, () => {
+              onComplete && onComplete(data, values);
+              if (this.props.clearOnComplete) this.clearState();
+            });
+          })
+          .catch(e => console.log("ERROR", e));
+      }
+    });
+  };
 
   getValue(field, values) {
     let value;
