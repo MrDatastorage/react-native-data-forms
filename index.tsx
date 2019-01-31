@@ -22,13 +22,7 @@ class DataForm extends React.Component<DataFormProps, DataFormState> {
   constructor(props: DataFormProps) {
     super(props);
     this.saveValues = this.saveValues.bind(this); //to give props
-
     this.state = { loading: false };
-    // probably works without this
-    // props.fields.forEach(field => {
-    //   this.state[field.field] = null;
-    //   //actually, this should also initialize all mapFieldsToDB properties, right?
-    // });
   }
 
   renderInput = ({ field, value, key }) => {
